@@ -55,6 +55,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pro_art.urls'
 
+MEDIA_ROOT = BASE_DIR / 'uploads/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

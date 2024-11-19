@@ -1,4 +1,5 @@
 from django.db import models
+from share.models import TimeStampedModel
 from users.models import Customer
 from products.models import Product
 
@@ -9,42 +10,65 @@ STATUS_ORDER = (
 )
 
 
-class Order(models.Model):
+class Order(TimeStampedModel):
     customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, related_name="orders")
-    date = models.DateTimeField('date creation')
+        Customer,
+        on_delete=models.CASCADE,
+        related_name="orders"
+    )
+    # date = models.DateTimeField('date creation')
     status = models.CharField(max_length=10,  choices=STATUS_ORDER)
 
     def __str__(self):
         return self.status
 
 
-class OrderDetail(models.Model):
+class OrderDetail(TimeStampedModel):
     order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="order_details")
+        Order,
+        on_delete=models.CASCADE,
+        related_name="order_details"
+    )
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="order_details")
+        Product,
+        on_delete=models.CASCADE,
+        related_name="order_details"
+    )
     quantity = models.IntegerField()
 
 
-class Invoice(models.Model):
+class Invoice(TimeStampedModel):
     order = models.OneToOneField(
-        Order, on_delete=models.CASCADE, related_name="invoice", null=False)
+        Order,
+        on_delete=models.CASCADE,
+        related_name="invoice",
+        null=False
+    )
     code = models.CharField(max_length=20)
     date = models.DateTimeField('date creation')
 
 
-class InvoiceDetail(models.Model):
+class InvoiceDetail(TimeStampedModel):
     invoice = models.ForeignKey(
-        Invoice, on_delete=models.CASCADE, related_name="invoice_details", null=False)
+        Invoice,
+        on_delete=models.CASCADE,
+        related_name="invoice_details",
+        null=False
+    )
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="invoice_details")
+        Product,
+        on_delete=models.CASCADE,
+        related_name="invoice_details"
+    )
     quantity = models.IntegerField()
 
 
-class Payment(models.Model):
+class Payment(TimeStampedModel):
     invoice = models.OneToOneField(
-        Invoice, on_delete=models.CASCADE, related_name="payment")
+        Invoice,
+        on_delete=models.CASCADE,
+        related_name="payment"
+    )
     date = models.DateTimeField('date payment')
     total = models.DecimalField(max_digits=10, decimal_places=3)
     tax = models.DecimalField(max_digits=10, decimal_places=3)

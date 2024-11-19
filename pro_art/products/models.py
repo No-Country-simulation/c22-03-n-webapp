@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Provider
+from share.models import TimeStampedModel
 
 
 STATUS_PRODUCT = [
@@ -9,14 +10,14 @@ STATUS_PRODUCT = [
 ]
 
 
-class Category(models.Model):
+class Category(TimeStampedModel):
     name = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
 
 
-class Product(models.Model):
+class Product(TimeStampedModel):
     provider = models.ForeignKey(
         Provider,
         on_delete=models.CASCADE,
@@ -34,7 +35,7 @@ class Product(models.Model):
         return f"{self.name} ({self.status})"
 
 
-class ProductImage(models.Model):
+class ProductImage(TimeStampedModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -42,6 +43,16 @@ class ProductImage(models.Model):
         related_name="images",
         blank=False
     )
-    # Instalar pilow
-    # image = models.ImageField(
-    #   upload_to=None, height_field=None, width_field=None, max_length=100)
+    image = models.ImageField(
+        null=True,
+        blank=False,
+        upload_to=None,
+        height_field=None,
+        width_field=None,
+        max_length=100
+    )
+
+    def delete(self, *args, **kwargs):
+        # TODO
+        # remove file in disk
+        return super().delete(*args, **kwargs)
