@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class UserProartConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'user_proart'
+    name = 'users'
