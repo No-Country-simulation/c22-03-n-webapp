@@ -1,17 +1,19 @@
 from django.db import models
-
 from user_proart.models import Provider
 
 
 STATUS_PRODUCT = [
-    ('Activated', 'Activated'),
-    ('Block', 'Block'),
-    ('Disabled', 'Disabled'),
+    ('ACTIVATED', 'ACTIVATED'),
+    ('BLOCK', 'BLOCK'),
+    ('DISABLED', 'DISABLED'),
 ]
 
 
 class Category(models.Model):
     name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -24,9 +26,12 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category, related_name="products")
     name = models.CharField(max_length=20)
     quantities = models.IntegerField(default=0)
-    price_product = models.FloatField(max_length=10)
+    price_product = models.DecimalField(max_length=5)
     description_product = models.TextField
     status = models.CharField(max_length=15, choices=STATUS_PRODUCT)
+
+    def __str__(self):
+        return f"{self.name} ({self.status})"
 
 
 class ProductImage(models.Model):
