@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'products',
+    'sales',
+    'users'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +54,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'pro_art.urls'
+
+MEDIA_ROOT = BASE_DIR / 'uploads/'
 
 TEMPLATES = [
     {

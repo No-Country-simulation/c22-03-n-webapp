@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class UserProartConfig(AppConfig):
+class ProductProartConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'user_proart'
+    name = 'products'
