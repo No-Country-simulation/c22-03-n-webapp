@@ -8,8 +8,7 @@ from .serializers import ProductSerializer
 # Obtencion y creacion de un producto.
 class ProductList(APIView):
     
-    """Pruebas
-    Ejecuta el servidor y prueba los endpoints:
+    """Ejecuta el servidor y prueba los endpoints
 
     - GET /api/products/
     Devuelve todos los productos.
@@ -52,7 +51,8 @@ class ProductList(APIView):
 
 # Obtencion, actualizacion y eliminacion de un producto.
 class ProductDetail(RetrieveUpdateDestroyAPIView):
-    """Pruebas
+    """Ejecuta el servidor y prueba los endpoints
+    
     - GET /api/products/<id>/
     Detalle de un producto.
     
