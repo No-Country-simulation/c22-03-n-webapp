@@ -4,7 +4,7 @@ from users.models import Customer
 from products.models import Product
 
 STATUS_ORDER = (
-    ('DRAFT', 'DRAFT'),
+    ('CANCELED', 'CANCELED'),
     ('PENDING', 'PENDING'),
     ('INVOICED', 'INVOICED'),
 )
@@ -64,8 +64,8 @@ class InvoiceDetail(TimeStampedModel):
 
 
 class Payment(TimeStampedModel):
-    invoice = models.OneToOneField(
-        Invoice,
+    order = models.OneToOneField(
+        Order,
         on_delete=models.CASCADE,
         related_name="payment"
     )
