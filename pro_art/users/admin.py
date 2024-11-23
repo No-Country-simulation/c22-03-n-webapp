@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User_proart, Provider, Customer
+from .models import Users
 # Register your models here.
 
 
@@ -15,6 +15,6 @@ class CustomerAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(User_proart, UserProartAdmin)
-admin.site.register(Provider, ProviderAdmin)
-admin.site.register(Customer, CustomerAdmin)
+admin.site.register(Users, UserProartAdmin)
+
+
