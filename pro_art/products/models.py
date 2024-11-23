@@ -51,10 +51,3 @@ class ProductImage(TimeStampedModel):
         # TODO
         # remove file in disk
         return super().delete(*args, **kwargs)
-
-# Modelo de proveedores
-class Provider(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
