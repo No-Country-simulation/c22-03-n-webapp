@@ -1,57 +1,38 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from datetime import date, datetime
 
 from share.models import TimeStampedModel
-UserModel = get_user_model()
 
+# Create your models here.
 
-class User_proart(TimeStampedModel):
-    user = models.OneToOneField(
-        UserModel,
-        null=False,
-        blank=False,
-        on_delete=models.CASCADE,
-        related_name='user_proart'
-    )
-    # UserModel tiene sus propios campos, como nombre, surname, email, etc.
-
-    def __str__(self) -> str:
-        return f"{self.pk} {self.user.username}"
-
-
-class Provider(TimeStampedModel):
-    user_proart = models.OneToOneField(
-        User_proart,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        related_name='provider'
-    )
-    # Tipo texto, faltará validar el cambio a int
-    phone_number = models.CharField(max_length=10)
-    address = models.CharField(max_length=20)
-    # creation_date = models.DateField("creation date")
-    # Los siguientes campos son de UserModel)por lo que no hace falta declarlo
-    # name = models.CharField(max_length=20)
-    # surname = models.CharField(max_length=20)
-    # email = models.EmailField(max_length=254)
+class Type_user(models.Model):
+    name_type = models.CharField(max_length=50, verbose_name='Tipo Empleado')
 
     def __str__(self):
-        return f"{self.user_proart.user.email} - {self.user_proart.user.username} ({self.phone_number})"  # noqa
+        return self.name_type
+    
+    class Meta:
+     
+        db_table = 'type_users'
+        ordering = ['id']
 
+class Users(models.Model):
+    dni = models.CharField(max_length=10, unique=True, verbose_name='DNI')
+    birthdate = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=20, verbose_name='Nombre')
+    surname = models.CharField(max_length=20, verbose_name='Apellido')
+    phone_number = models.CharField(max_length=20, verbose_name='Teléfono')
+    email = models.EmailField(max_length=54, verbose_name='Email')
+    direction = models.CharField(max_length=250, verbose_name='Dirección')
+    type_user = models.ForeignKey(Type_user, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatar/%Y/%m/%d', null=True, blank=True)
 
-class Customer(TimeStampedModel):
-    user_proart = models.OneToOneField(
-        User_proart,
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        related_name='customer'
-    )
-    # Tipo texto, faltará validar el cambio a int
-    phone_number = models.CharField(max_length=10)
-    address = models.CharField(max_length=20)
-    # creation_date = models.DateField("creation date")
-    # name = models.CharField(max_length=20)
-    # surname = models.CharField(max_length=20)
-    # email = models.EmailField(max_length=254)
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+     
+        db_table = 'users'
+        ordering = ['id']
+
+    
