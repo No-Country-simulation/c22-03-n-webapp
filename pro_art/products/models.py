@@ -1,5 +1,4 @@
 from django.db import models
-
 from share.models import TimeStampedModel
 
 # Estados de los productos
@@ -23,7 +22,7 @@ class Product(TimeStampedModel):
     name = models.CharField(max_length=20)
     quantities = models.IntegerField(default=0)
     price_product = models.DecimalField(max_digits=10, decimal_places=3)
-    description_product = models.TextField
+    description_product = models.TextField()
     status = models.CharField(max_length=15, choices=STATUS_PRODUCT)
     
     def __str__(self):
@@ -41,7 +40,7 @@ class ProductImage(TimeStampedModel):
     image = models.ImageField(
         null=True,
         blank=False,
-        upload_to=None,
+        upload_to="products_images/",
         height_field=None,
         width_field=None,
         max_length=100
@@ -51,10 +50,3 @@ class ProductImage(TimeStampedModel):
         # TODO
         # remove file in disk
         return super().delete(*args, **kwargs)
-
-# Modelo de proveedores
-class Provider(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name

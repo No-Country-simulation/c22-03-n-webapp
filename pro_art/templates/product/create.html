@@ -1,0 +1,41 @@
+{% extends 'body.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<form method="POST" action="." enctype="multipart/form-data">
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-plus"></i>
+                {{ title }}
+            </h3>
+        </div>
+        <div class="card-body">
+            {% csrf_token %}
+            <h4>Datos del Producto</h4>
+            {% for field in form.visible_fields %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                {{ field|add_class:"form-control"|attr:"autocomplete:off" }}
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <h4>Imágenes del Producto</h4>
+            {% for field in image_form.visible_fields %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                {{ field|add_class:"form-control"|attr:"autocomplete:off" }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary btn-flat">
+                <i class="fas fa-save"></i> Crear Producto
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}

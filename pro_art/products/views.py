@@ -1,81 +1,46 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .models import Product
-from .serializers import ProductSerializer
+from django.shortcuts import get_object_or_404, redirect, render
+from products.forms import ProductForm
+from .models import Product, ProductImage
 
-# Obtencion y creacion de un producto.
-class ProductList(APIView):
-    
-    """Ejecuta el servidor y prueba los endpoints
 
-    - GET /api/products/
-    Devuelve todos los productos.
-    
-    - POST /api/products/
-    Crear un producto nuevo con JSON como:
-    
-        {
-            "provider_id": 1,
-            "categories_ids": [1, 2],
-            "name": "Laptop",
-            "quantities": 10,
-            "price_product": 1200.123,
-            "description_product": "A high-performance laptop",
-            "status": "available"
-        }
-    
-    """
-    def get(self, request):
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+# Vistas de productos
 
-    def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
+# Listar todos los productos
+def product_list(request):
+    products = Product.objects.prefetch_related("categories","images").all()
+    context = {
+        'products': products
+    }
+    return render(request, "products/list.html")
+
+
+# Detalle de un producto
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    context = {
+        'product': product
+    }
+    return render(request, "products/detail.html", context)
+
+# Resgistro de productos
+def product_create(request):
+    if request.method == 'POST':
+        product_form = ProductForm(request.POST, request.FILES)
+        if product_form.is_valid():
+            # Se guarda el producto
+            product  = product_form.save()
             
-            serializer = ProductSerializer(data=request.data)
-            quantities = serializer.validated_data.get("quantities")
+            image = product_form.cleaned_data.get('image')
+            ProductImage.objects.create(product=product, image=image)
             
-            if quantities > 0:
-                serializer.validated_data['STATUS'] = 'AVAILABLE'
-            elif quantities == 0:
-                serializer.validated_data['STATUS'] = 'DICONTINUED'
-                
-            Product = serializer.save()
-            
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# Obtencion, actualizacion y eliminacion de un producto.
-class ProductDetail(RetrieveUpdateDestroyAPIView):
-    """Ejecuta el servidor y prueba los endpoints
+            return redirect('productdetail')
     
-    - GET /api/products/<id>/
-    Detalle de un producto.
+    else:
+        product_form = ProductForm()
     
-    - PUT/PATCH /api/products/<id>/
-    Actualización de un producto.
+    context={
+        'form': product_form,
+        'title': 'Registro de productos'
+    }
     
-    - DELETE /api/products/<id>/
-    Eliminación de un producto.
-
-    """
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-    
-    def perform_update(self, serializer):
-        # Lógica para actualizar el estado del producto
-        quantities = serializer.validated_data.get('quantities', self.get_object().quantities)
-        if quantities > 0:
-            serializer.validated_data['status'] = 'AVAILABLE'
-        else:
-            serializer.validated_data['status'] = 'DISCONTINUED'
-        
-        # Guardar el producto con el nuevo estado
-        serializer.save()
-    
-    
-    
+    return render(request, 'products/create.html', context)

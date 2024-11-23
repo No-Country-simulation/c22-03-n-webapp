@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     'products',
     'sales',
     'users',
-    'rest_framework',
-    'drf_yasg',
     #Libs
      'widget_tweaks',
 ]
@@ -60,7 +58,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pro_art.urls'
 
-MEDIA_ROOT = BASE_DIR / 'uploads/'
+MEDIA_URL = '/uploads/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
 
 TEMPLATES = [
     {
@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'pro_art.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = db.POSTGRESQL
+DATABASES = db.SQLITE
 
 
 # Password validation

@@ -16,33 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-from rest_framework import permissions
-from products.views import ProductList
-from products.views import ProductDetail
+from products import views
+from django.conf import settings
+from django.conf.urls.static import static
 
-schema_view = get_schema_view(
-   openapi.Info(
-      title="Pro Art API",
-      default_version='v1',
-      description="API documentation for the Pro Art project",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
-)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pro_art/products/', ProductList.as_view(), name='product-list'),
-    path('pro_art/products/details/<int:pk>', ProductDetail.as_view(), name='product-detail'),
+    path('pro_art/products/', views.product_list, name='product_list'),
+    path('pro_art/products/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('pro_art/products/create/', views.product_create, name='product_create'),
     path('user/', include('users.urls')),
     
-    # Swagger como página de inicio
-    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
+
+if settings.DEBUG:  # Solo para desarrollo
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
