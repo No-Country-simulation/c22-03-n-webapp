@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-
+import pro_art.db as db
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'drf_yasg',
+    #Libs
+     'widget_tweaks',
 ]
 
 
@@ -63,9 +65,7 @@ MEDIA_ROOT = BASE_DIR / 'uploads/'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / "venv/Lib/site-packages/drf_yasg/templates",
-            ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,12 +85,7 @@ WSGI_APPLICATION = 'pro_art.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = db.POSTGRESQL
 
 
 # Password validation
@@ -129,7 +124,9 @@ USE_TZ = True
 # python manage.py collectstatic en la terminal para recoger los archivos estáticos
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type

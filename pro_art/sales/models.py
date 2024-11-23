@@ -1,6 +1,6 @@
 from django.db import models
 from share.models import TimeStampedModel
-from users.models import Customer
+from users.models import Users
 from products.models import Product
 
 STATUS_ORDER = (
@@ -12,7 +12,7 @@ STATUS_ORDER = (
 
 class Order(TimeStampedModel):
     customer = models.ForeignKey(
-        Customer,
+        Users,
         on_delete=models.CASCADE,
         related_name="orders"
     )
