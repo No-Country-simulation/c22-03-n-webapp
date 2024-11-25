@@ -5,36 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 <body>
-<h4>Orders List</h4>
 
-<h1> {{customer.user_proart.user.email}}</h1>
-<h1> {{customer.user_proart.user.first_name}}</h1>
+  <h4>Orders List</h4>
 
-
+<h1> {{customer.user_proart.user.username}}</h1>
 
 <form method="post" enctype="multipart/form-data">
     <h1> {{customer.user_proart.user.name}}</h1>
     <table class="table" border="1">
       <thead class="thead-light">
         <tr>
-          <th scope="col">Número pedido</th>
-          <th scope="col">Fecha del pedido</th>
-          <th scope="col">status</th>
+          <th scope="col">Order Number</th>
+          <th scope="col">Created at</th>
+          <th scope="col">Status</th>
+          <th scope="col"></th>
         </tr>
       </thead>
    
-{% for i in object_list %}
-<tr>
-    <td>{{i.id}}</td>
-    <td>{{i.created_at}}</td>
-    <td> {{i.status}}  </td>
-   
-</tr>
-
-{% endfor %}
-</table>
+        {% for o in object_list %}
+        <tr>
+            <td>{{o.id}}</td>
+            <td>{{o.created_at}}</td>
+            <td> {{o.status}}  </td>
+            <td>
+            {% if o.payment %}
+            pagado con fecha: {{ o.payment.created_at}}
+            {% else %}
+            ---
+            {% endif %}
+            </td>
+              <td>
+            <a href="{% url 'order_detail' pk=o.id %}" type="button" >Detail</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      
 </form>
-
-
 </body>
 </html>

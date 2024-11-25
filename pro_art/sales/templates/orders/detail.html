@@ -7,35 +7,59 @@
 <body>
 <h4>Order Detail</h4>
 
-<h1> {{customer.user_proart.user.email}}</h1>
+<h1> {{object.customer.user_proart.user.username}}</h1>
 
-
-<form method="post" enctype="multipart/form-data">
-    <h1> {{customer.user_proart.user.name}}</h1>
+  <form method="post" enctype="multipart/form-data">
     <table class="table" border="1">
       <thead class="thead-light">
         <tr>
-          <th scope="col">Número pedido</th>
-          <th scope="col">Fecha del pedido</th>
-          <th scope="col">status</th>
-          <th scope="col">importe</th>
-          <th scope="col">pagado</th>
-          <th scope="col">entregado</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Product</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+          <th scope="col">Status</th>
+          <th scope="col">Total</th>
+          <th scope="col"></th>
         </tr>
       </thead>
-   
-{% for i in object_list %}
-<tr>
-    <td>{{i.id}}</td>
-    <td>{{i.created_at}}</td>
-    <td> {{i.status}}  </td>
-    
-</tr>
-
-{% endfor %}
-</table>
-</form>
 
 
+    {% for od in object.order_details.all %}
+        <tr>
+            <td>{{od.created_at}}</td>
+            <td>{{od.product}}</td>
+            <td>{{od.quantity}}</td>
+            <td>{{od.product.price_product}}</td>
+            <td>{{od.product.status}}</td>
+            
+        </tr>
+    {% endfor %}
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Total Amount</td>
+          <td> 
+            {% if object.payment %}
+            pagado con fecha: {{ object.payment.created_at}}
+            {% else %}
+            boton pagar
+            {% endif %}
+          </td>
+
+
+        </tr>
+  
+
+    </table>
+  </form>
+  <br>
+  <a href="{% url 'order_list' %}" type="submit" >Return to Order List</a>
+
+  <br>
+
+  
 </body>
 </html>

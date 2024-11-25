@@ -6,7 +6,7 @@ from users.models import Customer
 from .models import Order
 
 
-class OrderList(ListView):
+class OrderListView(ListView):
     model = Order
     # debe de estar logueado
 
@@ -22,3 +22,18 @@ class OrderList(ListView):
         context['customer'] = Customer.objects.first()
         print(context)
         return context
+
+
+class OrderDetailView(DetailView):
+    model = Order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # modificarlo por el usuario logueado
+        # context['customer'] = Customer.objects.first()
+        print(context)
+        return context
+
+
+class PaymentTotal(CreateView):

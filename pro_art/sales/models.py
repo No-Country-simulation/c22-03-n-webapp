@@ -20,7 +20,7 @@ class Order(TimeStampedModel):
     status = models.CharField(max_length=10,  choices=STATUS_ORDER)
 
     def __str__(self):
-        return self.status
+        return f"{self.pk} - {self.customer} - {self.status}"
 
 
 class OrderDetail(TimeStampedModel):
