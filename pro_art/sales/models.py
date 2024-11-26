@@ -72,3 +72,7 @@ class Payment(TimeStampedModel):
     date = models.DateTimeField('date payment')
     total = models.DecimalField(max_digits=10, decimal_places=3)
     tax = models.DecimalField(max_digits=10, decimal_places=3)
+
+    def save(self, *args, **kwargs):
+        Payment.total = Product.price_product * Product.quantities
+        super(Payment, self).save(*args, **kwargs)

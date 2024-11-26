@@ -36,4 +36,4 @@ class OrderDetailView(DetailView):
         return context
 
 
-class PaymentTotal(CreateView):
+# class PaymentTotal(CreateView):
