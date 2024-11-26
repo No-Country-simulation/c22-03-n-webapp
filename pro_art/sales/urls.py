@@ -5,6 +5,10 @@ from .views import (
     OrderListView,
     OrderDetailView
 )
+from .views import (
+    PayView,
+)
+
 
 urlpatterns = [
 
@@ -12,4 +16,6 @@ urlpatterns = [
          name='order_list'),
     path('orders/detail/<int:pk>', OrderDetailView.as_view(template_name="orders/detail.html"),
          name='order_detail'),
+    path('payment/>', PayView.as_view(template_name="payments/index.html"),
+         name='payment'),
 ]

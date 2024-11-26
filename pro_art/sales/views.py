@@ -2,8 +2,8 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db.models import Q
 from users.models import Customer
-# from django.shortcuts import render
-from .models import Order
+from products.models import Product
+from .models import Order, Payment
 
 
 class OrderListView(ListView):
@@ -32,8 +32,16 @@ class OrderDetailView(DetailView):
 
         # modificarlo por el usuario logueado
         # context['customer'] = Customer.objects.first()
+        total = 0
+        print('---', context)
+        print('object reservada', object)
+        for od in context['object'].order_details.all():
+            total += od.quantity * od.product.price_product
+        context['total'] = total
         print(context)
         return context
 
 
-# class PaymentTotal(CreateView):
+class PayView(CreateView):
+    model = Payment
+    fields = "__all__"

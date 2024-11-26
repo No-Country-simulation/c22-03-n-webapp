@@ -22,6 +22,30 @@ class Order(TimeStampedModel):
     def __str__(self):
         return f"{self.pk} - {self.customer} - {self.status}"
 
+    def save(self, *args, **kwargs):
+        self.total = 0
+        for od in self.order.order_details.all():
+            self.total += od.total
+        return super(Order, self).save(*args, **kwargs)
+
+
+"""
+select sum(pro.price * od.quantity)
+from od, pro
+where od.order.pk=3 and od.productpk=pro.pk
+
+o = Order.objects.filter(pk=3).first()
+o = Order.objects.get(pk=3)
+
+o.order_details.all() --- lista de order detail
+total = 0
+for od in o.order_details.all():
+    total += od.quantity * od.product.price_product
+
+    
+o.order_details.all().aggregate(total=Sum(F('quantity') * F('product__price_product')))
+"""
+
 
 class OrderDetail(TimeStampedModel):
     order = models.ForeignKey(
@@ -35,6 +59,10 @@ class OrderDetail(TimeStampedModel):
         related_name="order_details"
     )
     quantity = models.IntegerField()
+
+    @property
+    def total(self):
+        return self.product.price_product * self.quantity
 
 
 class Invoice(TimeStampedModel):
@@ -74,5 +102,7 @@ class Payment(TimeStampedModel):
     tax = models.DecimalField(max_digits=10, decimal_places=3)
 
     def save(self, *args, **kwargs):
-        Payment.total = Product.price_product * Product.quantities
-        super(Payment, self).save(*args, **kwargs)
+        self.total = 0
+        for od in self.order.order_details.all():
+            self.total += od.total
+        return super(Payment, self).save(*args, **kwargs)

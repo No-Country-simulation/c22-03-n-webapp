@@ -31,7 +31,7 @@
             <td>{{od.quantity}}</td>
             <td>{{od.product.price_product}}</td>
             <td>{{od.product.status}}</td>
-            
+            <td>{{od.total}}</td>
         </tr>
     {% endfor %}
         <tr>
@@ -40,16 +40,16 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>Total Amount</td>
+          <td>{{ total }}</td>
           <td> 
             {% if object.payment %}
             pagado con fecha: {{ object.payment.created_at}}
             {% else %}
+            <a href="{% url 'payment' %}" type="button" >Pay</a>
             boton pagar
             {% endif %}
           </td>
-
-
+         
         </tr>
   
 
