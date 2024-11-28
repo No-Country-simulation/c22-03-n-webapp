@@ -22,11 +22,20 @@ class Order(TimeStampedModel):
     def __str__(self):
         return f"{self.pk} - {self.customer} - {self.status}"
 
-    def save(self, *args, **kwargs):
+    @property
+    def total(self):
+        total = 0
+        for od in self.order_details.all():
+            total += od.total
+        return total
+
+
+"""     def save(self, *args, **kwargs):
         self.total = 0
-        for od in self.order.order_details.all():
+        for od in self.order_details.all():
             self.total += od.total
         return super(Order, self).save(*args, **kwargs)
+        """
 
 
 """

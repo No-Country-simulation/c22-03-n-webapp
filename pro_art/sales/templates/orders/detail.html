@@ -17,7 +17,6 @@
           <th scope="col">Product</th>
           <th scope="col">Quantity</th>
           <th scope="col">Price</th>
-          <th scope="col">Status</th>
           <th scope="col">Total</th>
           <th scope="col"></th>
         </tr>
@@ -30,7 +29,6 @@
             <td>{{od.product}}</td>
             <td>{{od.quantity}}</td>
             <td>{{od.product.price_product}}</td>
-            <td>{{od.product.status}}</td>
             <td>{{od.total}}</td>
         </tr>
     {% endfor %}
@@ -42,17 +40,15 @@
           <td></td>
           <td>{{ total }}</td>
           <td> 
-            {% if object.payment %}
+            {% if object.payment  %}
             pagado con fecha: {{ object.payment.created_at}}
+            {% elif order.status == 'CANCELED' %}
+            ...
             {% else %}
-            <a href="{% url 'payment' %}" type="button" >Pay</a>
-            boton pagar
+            <a href="{% url 'order_payment' order_pk=object.pk %}" type="button" >Pay</a>
             {% endif %}
           </td>
-         
         </tr>
-  
-
     </table>
   </form>
   <br>

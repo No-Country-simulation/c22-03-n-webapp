@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+<body>
+
+  <h4>Payments</h4>
+
+  <form method="post" enctype="multipart/form-data">
+    <table class="table" border="1">
+      <thead class="thead-light">
+      
+      <tr>
+        <td>Total a pagar</td>
+        <td>{{ order.total}}</td>
+        <td>  </td> 
+    </tr>
+    </table>
+</form>
+
+
+<h4>PAGAR</h4>  
+Total a pagar: {{ order.total}}
+
+<br>
+<a href="{% url 'order_list' %}" type="submit" >Return to Order List</a>
+
+</body>
+</html>
+https://medium.com/@hellenwain_54279/django-class-based-views-createview-b7c7ead3085

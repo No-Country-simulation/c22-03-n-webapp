@@ -30,8 +30,10 @@
             <td>
             {% if o.payment %}
             pagado con fecha: {{ o.payment.created_at}}
+            {% elif o.status == 'CANCELED' %}
+            cancelado con fecha: {{ o.payment.updated_at}}
             {% else %}
-            ---
+            pendiente de pago
             {% endif %}
             </td>
               <td>
@@ -40,7 +42,6 @@
         </tr>
         {% endfor %}
       </table>
-      
 </form>
 </body>
 </html>
