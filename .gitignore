@@ -1,3 +1,5 @@
 env/
 pro_art/db.sqlite3
 uploads/
+*.pyc
+__pycache__/
