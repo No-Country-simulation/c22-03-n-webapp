@@ -1,31 +1,158 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{{ title }}</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/css/adminlte.min.css' %}">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <!-- AdminLTE App -->
-    <script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
-    <!-- bloque head -->
-    {% block head%}
+{% extends 'base.html' %}
 
-    
+{% block content %}
+    <section class="hero py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 mb-4">Productos Artesanales</h1>
+                    <p class="lead mb-4">
+                        Descubra piezas únicas hechas a mano que cuentan historias a través de su artesanía.
+                        Cada artículo de nuestra colección está creado cuidadosamente por artesanos expertos que vierten su pasión en cada detalle.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-primary btn-lg">Shop Now</button>
+                        <button class="btn btn-outline-primary btn-lg">About Us</button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3" 
+                         alt="Handcrafted pottery collection" 
+                         class="img-fluid rounded-4 hero-image">
+                </div>
+            </div>
+        </div>
+    </section>
 
-    {% endblock %}
-</head>
-{% block body %}
+    <!-- Categories -->
+    <section class="categories py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Categorias</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3" 
+                             alt="Decoracion" 
+                             class="img-fluid">
+                        <div class="category-overlay">
+                            <h3>Decoracion</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3" 
+                             alt="Ceramicas" 
+                             class="img-fluid">
+                        <div class="category-overlay">
+                            <h3>Ceramicas</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3" 
+                             alt="Joyas" 
+                             class="img-fluid">
+                        <div class="category-overlay">
+                            <h3>Joyas</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3" 
+                             alt="Textiles" 
+                             class="img-fluid">
+                        <div class="category-overlay">
+                            <h3>Textiles</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- Products -->
+    <section class="featured-products py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Productos</h2>
+            <div class="row g-4">
+                <!-- 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?ixlib=rb-4.0.3" 
+                                 class="card-img-top" 
+                                 alt="Handcrafted Ceramic Vase">
+                            <button class="btn btn-light rounded-circle favorite-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge bg-secondary mb-2">Pottery</span>
+                            <h3 class="card-title">Handcrafted Ceramic Vase</h3>
+                            <p class="card-text text-muted">by Sarah Chen</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$129.99</span>
+                                <button class="btn btn-primary rounded-circle">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?ixlib=rb-4.0.3" 
+                                 class="card-img-top" 
+                                 alt="Woven Wall Hanging">
+                            <button class="btn btn-light rounded-circle favorite-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge bg-secondary mb-2">Home Decor</span>
+                            <h3 class="card-title">Woven Wall Hanging</h3>
+                            <p class="card-text text-muted">by Maria Garcia</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$129.99</span>
+                                <button class="btn btn-primary rounded-circle">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card product-card h-100">
+                        <div class="position-relative">
+                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?ixlib=rb-4.0.3" 
+                                 class="card-img-top" 
+                                 alt="Ceramic Tea Set">
+                            <button class="btn btn-light rounded-circle favorite-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge bg-secondary mb-2">Pottery</span>
+                            <h3 class="card-title">Ceramic Tea Set</h3>
+                            <p class="card-text text-muted">by James Lee</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price">$159.99</span>
+                                <button class="btn btn-primary rounded-circle">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
-</html>
