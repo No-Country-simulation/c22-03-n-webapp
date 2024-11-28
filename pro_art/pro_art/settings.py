@@ -65,7 +65,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,9 +124,6 @@ USE_TZ = True
 # python manage.py collectstatic en la terminal para recoger los archivos estáticos
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type

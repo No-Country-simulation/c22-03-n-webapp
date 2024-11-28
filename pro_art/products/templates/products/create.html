@@ -24,12 +24,10 @@
             {% endfor %}
 
             <h4>Imágenes del Producto</h4>
-            {% for field in image_form.visible_fields %}
             <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
-                {{ field|add_class:"form-control"|attr:"autocomplete:off" }}
+                <label for="images">Sube las imágenes:</label>
+                <input type="file" name="images" id="images" multiple class="form-control">
             </div>
-            {% endfor %}
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary btn-flat">
