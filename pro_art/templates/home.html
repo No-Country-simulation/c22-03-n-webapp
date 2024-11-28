@@ -29,46 +29,9 @@
         <div class="container">
             <h2 class="text-center mb-5">Categorias</h2>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3" 
-                             alt="Decoracion" 
-                             class="img-fluid">
-                        <div class="category-overlay">
-                            <h3>Decoracion</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3" 
-                             alt="Ceramicas" 
-                             class="img-fluid">
-                        <div class="category-overlay">
-                            <h3>Ceramicas</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3" 
-                             alt="Joyas" 
-                             class="img-fluid">
-                        <div class="category-overlay">
-                            <h3>Joyas</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="category-card">
-                        <img src="https://images.unsplash.com/photo-1544441893-675973e31985?ixlib=rb-4.0.3" 
-                             alt="Textiles" 
-                             class="img-fluid">
-                        <div class="category-overlay">
-                            <h3>Textiles</h3>
-                        </div>
-                    </div>
-                </div>
+                {% for category in categories %}
+                    {% include 'components/category_card.html' with category=category %}
+                {% endfor %}
             </div>
         </div>
     </section>
