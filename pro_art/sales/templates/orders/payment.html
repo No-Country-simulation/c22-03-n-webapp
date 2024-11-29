@@ -7,26 +7,30 @@
 <body>
 
   <h4>Payments</h4>
-
+  
   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <table class="table" border="1">
       <thead class="thead-light">
       
       <tr>
         <td>Total a pagar</td>
-        <td>{{ order.total}}</td>
-        <td>  </td> 
+        <td>{{ order.total }}</td>
+        <td> <button type="submit"> Confirm pay</button>  </td> 
     </tr>
-    </table>
+    
+    </table>{% for field in form %}
+
+        {{ field.as_hidden }}
+
+{% endfor %}
 </form>
 
-
-<h4>PAGAR</h4>  
-Total a pagar: {{ order.total}}
-
+<br>
+<a href="{% url 'order_detail' pk=order.pk %}" type="submit" >Return to Order</a>
 <br>
 <a href="{% url 'order_list' %}" type="submit" >Return to Order List</a>
 
+
 </body>
 </html>
-https://medium.com/@hellenwain_54279/django-class-based-views-createview-b7c7ead3085

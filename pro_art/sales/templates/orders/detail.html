@@ -9,27 +9,58 @@
 
 <h1> {{object.customer.user_proart.user.username}}</h1>
 
-  <form method="post" enctype="multipart/form-data">
+{% if messages %}
+<h1 class="alert alert-secondary" role="alert">
+  {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</h1>
+{% endif %}
     <table class="table" border="1">
       <thead class="thead-light">
         <tr>
+          <th>IMG</th>
           <th scope="col">Created At</th>
           <th scope="col">Product</th>
           <th scope="col">Quantity</th>
           <th scope="col">Price</th>
           <th scope="col">Total</th>
-          <th scope="col"></th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
 
 
     {% for od in object.order_details.all %}
         <tr>
+            <td></td>
             <td>{{od.created_at}}</td>
             <td>{{od.product}}</td>
             <td>{{od.quantity}}</td>
             <td>{{od.product.price_product}}</td>
             <td>{{od.total}}</td>
+            <td>
+              {% if order.status == 'PENDING' %}
+                <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" name="quantity" value='{{od.quantity|add:"-1"}}'>
+                  <button type="submit"> - </button>
+                </form>
+                <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="hidden" name="quantity" value="{{od.quantity|add:1}}">
+                  <button type="submit"> + </button>
+                </form>
+              {% endif %}
+            </td>
+            <td>
+              {% if order.status == 'PENDING' %}
+                <form method="post" action="{% url 'order_detail_delete' pk=od.pk %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <button type="submit">Delete</button> 
+                </form>
+              {% endif %}
+            </td>
         </tr>
     {% endfor %}
         <tr>
@@ -40,16 +71,19 @@
           <td></td>
           <td>{{ total }}</td>
           <td> 
-            {% if object.payment  %}
+              {% if object.payment  %}
             pagado con fecha: {{ object.payment.created_at}}
             {% elif order.status == 'CANCELED' %}
-            ...
+            cancelado con fecha: {{ object.updated_at }}
             {% else %}
-            <a href="{% url 'order_payment' order_pk=object.pk %}" type="button" >Pay</a>
+            <a href="{% url 'order_payment' order_pk=object.pk %}" type="button" >Pay!!!!</a>
             {% endif %}
-          </td>
+            </td>
         </tr>
     </table>
+
+
+   
   </form>
   <br>
   <a href="{% url 'order_list' %}" type="submit" >Return to Order List</a>

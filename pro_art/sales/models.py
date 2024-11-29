@@ -1,4 +1,8 @@
+import datetime
+
 from django.db import models
+from django.db import transaction
+
 from share.models import TimeStampedModel
 from users.models import Customer
 from products.models import Product
@@ -6,6 +10,7 @@ from products.models import Product
 STATUS_ORDER = (
     ('CANCELED', 'CANCELED'),
     ('PENDING', 'PENDING'),
+    ('PAID', 'PAID'),
     ('INVOICED', 'INVOICED'),
 )
 
@@ -16,7 +21,6 @@ class Order(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name="orders"
     )
-    # date = models.DateTimeField('date creation')
     status = models.CharField(max_length=10,  choices=STATUS_ORDER)
 
     def __str__(self):
@@ -28,32 +32,6 @@ class Order(TimeStampedModel):
         for od in self.order_details.all():
             total += od.total
         return total
-
-
-"""     def save(self, *args, **kwargs):
-        self.total = 0
-        for od in self.order_details.all():
-            self.total += od.total
-        return super(Order, self).save(*args, **kwargs)
-        """
-
-
-"""
-select sum(pro.price * od.quantity)
-from od, pro
-where od.order.pk=3 and od.productpk=pro.pk
-
-o = Order.objects.filter(pk=3).first()
-o = Order.objects.get(pk=3)
-
-o.order_details.all() --- lista de order detail
-total = 0
-for od in o.order_details.all():
-    total += od.quantity * od.product.price_product
-
-    
-o.order_details.all().aggregate(total=Sum(F('quantity') * F('product__price_product')))
-"""
 
 
 class OrderDetail(TimeStampedModel):
@@ -110,8 +88,15 @@ class Payment(TimeStampedModel):
     total = models.DecimalField(max_digits=10, decimal_places=3)
     tax = models.DecimalField(max_digits=10, decimal_places=3)
 
+    @transaction.atomic
     def save(self, *args, **kwargs):
+        self.tax = 0
         self.total = 0
+        self.date = datetime.datetime.now()
         for od in self.order.order_details.all():
             self.total += od.total
-        return super(Payment, self).save(*args, **kwargs)
+
+        result = super(Payment, self).save(*args, **kwargs)
+        self.order.status = 'PAID'
+        self.order.save()
+        return result

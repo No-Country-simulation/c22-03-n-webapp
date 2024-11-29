@@ -7,8 +7,6 @@ from .models import (
     Payment,
 )
 
-# Register your models here.
-
 
 class OrderAdmin(admin.ModelAdmin):
     pass
