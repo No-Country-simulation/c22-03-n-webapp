@@ -2,3 +2,6 @@ env/
 pro_art/db.sqlite3
 uploads/
 .DS_Store
+venv/
+*.pyc
+__pycache__/*
