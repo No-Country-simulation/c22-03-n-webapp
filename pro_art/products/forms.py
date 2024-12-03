@@ -19,7 +19,7 @@ class ProductForm(forms.ModelForm):
             'categories': forms.CheckboxSelectMultiple()
         }
 
-class ProductImageForm(forms.ModelForm):
-    class Meta:
-        model = ProductImage
-        fields = ['image']
+# class ProductImageForm(forms.ModelForm):
+#     class Meta:
+#         model = ProductImage
+#         fields = ['image']

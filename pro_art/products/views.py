@@ -1,9 +1,9 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from products.forms import ProductForm, ProductImageForm
+from products.forms import ProductForm
 from .models import *
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView,DetailView
 
 # Vistas de productos
 def product_list(request):
@@ -28,18 +28,19 @@ class Product_listView(ListView):
         context['title'] = 'Listado de productos'
         return context
 
-class Product_detailView(ListView):
+class Product_detailView(DetailView):
     model = Product
     template_name = 'products/detail.html'
     context_object_name = 'product'
     
     # Detalle de un producto
     def product_detail(request, product_id):
-        product = Product.objects.prefetch_related("categories","images").get(id=product_id)
+        product = Product.objects.prefetch_related("categories", "images").get(id=product_id)
         context = {
-            'product': product
+            'product': product,
         }
-        return render(request, "templates/detail.html", context)
+        return render(request, "products/detail.html", context)
+
 
     
 class Product_createView(CreateView):
@@ -48,17 +49,19 @@ class Product_createView(CreateView):
     template_name = 'products/create.html'
     success_url = reverse_lazy('product_list')
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         # Obtenemos el formulario del producto
         form = self.get_form()
         images = request.FILES.getlist('images')  # Obtiene las imágenes del formulario
+        
         if form.is_valid():
             # Guardamos el producto
             product = form.save()
             # Guardamos las imágenes asociadas
             for image_file in images:
                 ProductImage.objects.create(product=product, image=image_file)
-            return HttpResponseRedirect(self.success_url)  # Redirige al listado
+            return HttpResponseRedirect(self.success_url)
+        
         # Si el formulario no es válido, devolvemos el formulario con errores
         return self.form_invalid(form)
 

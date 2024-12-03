@@ -58,8 +58,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pro_art.urls'
 
-MEDIA_URL = '/uploads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 TEMPLATES = [
