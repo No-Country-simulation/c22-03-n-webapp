@@ -4,8 +4,10 @@ from products.models import Product, Category
 
 def home(request):
     categories = Category.objects.all()
+    products = Product.objects.all()
     context = {
-        'categories': categories
+        'categories': categories,
+        'products': products
     }
     return render(request, 'home.html', context)
 
