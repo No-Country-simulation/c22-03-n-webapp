@@ -39,7 +39,7 @@
             {% if o.payment %}
             pagado con fecha: {{ o.payment.created_at}}
             {% elif o.status == 'CANCELED' %}
-            cancelado con fecha: {{ o.payment.updated_at}}
+            cancelado con fecha: {{ o.updated_at}}
             {% else %}
             pendiente de pago
             {% endif %}
