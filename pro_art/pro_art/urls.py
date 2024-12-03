@@ -26,7 +26,6 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='inicio'),
     path('products/', include('products.urls')),
     path('user/', include('users.urls')),
-    
 ]
 
 if settings.DEBUG:  # Solo para desarrollo
