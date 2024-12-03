@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Provider
+
 from share.models import TimeStampedModel
 
 # Estados de los productos
@@ -16,14 +16,9 @@ class Category(TimeStampedModel):
     def __str__(self):
         return self.name
 
-# Modelo de productos
+#Modelo de productos
 class Product(TimeStampedModel):
-    provider = models.ForeignKey(
-        Provider,
-        on_delete=models.CASCADE,
-        null=False,
-        related_name="products",
-        blank=False)
+  
     categories = models.ManyToManyField(Category, related_name="products")
     name = models.CharField(max_length=20)
     quantities = models.IntegerField(default=0)
@@ -34,7 +29,7 @@ class Product(TimeStampedModel):
     def __str__(self):
         return f"{self.name} ({self.status})"
 
-# Modelos de imagenes de productos
+#Modelos de imagenes de productos
 class ProductImage(TimeStampedModel):
     product = models.ForeignKey(
         Product,
@@ -56,10 +51,3 @@ class ProductImage(TimeStampedModel):
         # TODO
         # remove file in disk
         return super().delete(*args, **kwargs)
-
-# Modelo de proveedores
-class Provider(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
