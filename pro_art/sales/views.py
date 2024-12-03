@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from users.models import Customer
+from users.models import Users
 from .models import Order, Payment, OrderDetail
 from .forms import OrderDetailUpdateQuantityForm
 
@@ -25,7 +25,7 @@ class OrderListView(ListView):
 
         # TODO
         # modificarlo por el usuario logueado
-        context['customer'] = Customer.objects.first()
+        context['customer'] = Users.objects.first()
         return context
 
 

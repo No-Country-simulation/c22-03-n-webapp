@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'drf_yasg',
-    #Libs
-     'widget_tweaks',
+    # Libs
+    'widget_tweaks',
 ]
 
 
@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'pro_art.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = db.POSTGRESQL
+DATABASES = db.SQLITE
 
 
 # Password validation
