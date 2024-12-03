@@ -41,80 +41,9 @@
         <div class="container">
             <h2 class="text-center mb-5">Productos</h2>
             <div class="row g-4">
-                <!-- 1 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card product-card h-100">
-                        <div class="position-relative">
-                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?ixlib=rb-4.0.3" 
-                                 class="card-img-top" 
-                                 alt="Handcrafted Ceramic Vase">
-                            <button class="btn btn-light rounded-circle favorite-btn">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <span class="badge bg-secondary mb-2">Pottery</span>
-                            <h3 class="card-title">Handcrafted Ceramic Vase</h3>
-                            <p class="card-text text-muted">by Sarah Chen</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price">$129.99</span>
-                                <button class="btn btn-primary rounded-circle">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card product-card h-100">
-                        <div class="position-relative">
-                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?ixlib=rb-4.0.3" 
-                                 class="card-img-top" 
-                                 alt="Woven Wall Hanging">
-                            <button class="btn btn-light rounded-circle favorite-btn">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <span class="badge bg-secondary mb-2">Home Decor</span>
-                            <h3 class="card-title">Woven Wall Hanging</h3>
-                            <p class="card-text text-muted">by Maria Garcia</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price">$129.99</span>
-                                <button class="btn btn-primary rounded-circle">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="card product-card h-100">
-                        <div class="position-relative">
-                            <img src="https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?ixlib=rb-4.0.3" 
-                                 class="card-img-top" 
-                                 alt="Ceramic Tea Set">
-                            <button class="btn btn-light rounded-circle favorite-btn">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <span class="badge bg-secondary mb-2">Pottery</span>
-                            <h3 class="card-title">Ceramic Tea Set</h3>
-                            <p class="card-text text-muted">by James Lee</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price">$159.99</span>
-                                <button class="btn btn-primary rounded-circle">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% for product in products %}
+                    {% include 'components/product_card.html' with product=product %}
+                {% endfor %}
             </div>
         </div>
     </section>
