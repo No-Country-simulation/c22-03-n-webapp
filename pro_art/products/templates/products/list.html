@@ -1,0 +1,41 @@
+{% extends 'body.html' %}
+{% block content %}
+
+<div class="container">
+    <h1 class="mb-4">Lista de Productos</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categorías</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>
+                    {% if product.images.first %}
+                    <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" style="width: 64px; height: 64px;">
+                    {% else %}
+                    <p>Sin imagen</p>
+                    {% endif %}
+                </td>
+                <td>{{ product.name }}</td>
+                <td>
+                    {% for category in product.categories.all %}
+                    <span class="badge badge-primary">{{ category.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>{{ product.get_status_display }}</td>
+                <td>
+                    <a href="{% url 'product_detail' product.id %}" class="btn btn-info btn-sm">Detalles</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
