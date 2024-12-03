@@ -63,25 +63,29 @@
             </td>
         </tr>
     {% endfor %}
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{{ total }}</td>
-          <td> 
-              {% if object.payment  %}
-            pagado con fecha: {{ object.payment.created_at}}
-            {% elif order.status == 'CANCELED' %}
-            cancelado con fecha: {{ object.updated_at }}
-            {% else %}
-            <a href="{% url 'order_payment' order_pk=object.pk %}" type="button" >Pay!!!!</a>
-            {% endif %}
-            </td>
-        </tr>
     </table>
 
+    <table>
+      <tr>
+        <td>{{ total }}</td>
+        <td> 
+            {% if object.payment  %}
+          pagado con fecha: {{ object.payment.created_at}}
+          {% elif order.status == 'CANCELED' %}
+          cancelado con fecha: {{ object.updated_at }}
+          {% else %}
+          <a href="{% url 'order_payment' order_pk=object.pk %}" type="button" >Pay!!!!</a>
+          {% endif %}
+          </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td> 
+          <a href="" type="button" >keep shopping</a>
+          </td>
+      </tr>
+    </table>
 
    
   </form>
