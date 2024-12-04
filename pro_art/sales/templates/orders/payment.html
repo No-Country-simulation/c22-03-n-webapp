@@ -1,0 +1,38 @@
+{% extends 'detail.html' %}
+
+
+{% block subcontent %}
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+      <thead>
+        <tr>
+          <td>Total a pagar</td>
+          <td>{{ order.total }}</td>
+          <td>
+            <button type="submit" class="btn btn-primary btn-flat btntest">
+              Confirm pay
+            </button>  
+          </td> 
+        </tr>
+      </thead>
+    </table>
+    {% for field in form %}
+      {{ field.as_hidden }}
+    {% endfor %}
+      
+</form>
+{% endblock %}
+
+{% block more_button %}
+  <a href="{% url 'order_detail' pk=order.pk %}" type="submit" >
+    Return to Order
+  </a>
+{% endblock %}
+
+{% block button_add %}
+  <a href="{% url 'order_list' %}" type="submit" >
+    Return to Order List
+  </a>
+{% endblock %}

@@ -23,8 +23,11 @@
             </div>
             <div class="content">
                 <div class="container">
-                    {% block content %}
+                    
+                    {% block messages %}
+                    {% endblock %}
 
+                    {% block content %}
                     {% endblock %}
                 </div>
             </div>

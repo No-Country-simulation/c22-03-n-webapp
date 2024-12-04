@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'products',
     'sales',
     'users',
-    #Libs
-     'widget_tweaks',
+    # Libs
+    'widget_tweaks',
 ]
 
 
