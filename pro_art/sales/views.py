@@ -1,3 +1,4 @@
+from django.views.generic.base import RedirectView
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -80,3 +81,54 @@ class OrderDetailUpdateView(SuccessMessageMixin, UpdateView):
         success_message = f'Product {self.object.product.name} updated'
         messages.success(self.request, (success_message))
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
+
+
+class AddProductToCart(RedirectView):
+    """
+    model = OrderDetail
+    template_name = 'orders/detail.html'
+    fields = '__all__'
+    def get_success_url(self):
+        success_message = f'Product {self.object.product.name} added'
+        messages.success(self.request, (success_message))
+        return reverse('order_detail', kwargs={'pk': self.object.order.pk})
+    """
+
+    def post(self, request, *args, **kwargs):
+        order_pk = {'pk': self.object.order.pk}
+        if kwargs.objects.filter().exists():
+
+            # Obtener el ususario loguedo
+            # TODO
+            # Saber el usuario logueado
+        customer = Users.objects.first()
+        # Buscar un order pending
+        order = Order.objects.filter(
+            status="PENDING", customer=customer).first()
+        # Si no existe lo creo
+        if order is None:
+            order = Order(customer=customer, status="PENDING")
+            order.save()
+
+        # Busco si el producto ya esta en el pedido
+        line = OrderDetail.objects.filter(product="pk", order=order).first()
+        # si el producto ya esta en el pedido, actualizo la cantidad
+        if line:
+            line.quantity += 1
+        # Si no existe el pedido o no esta dentro del pedido el producto, lo añado(creo orderdetail)
+        else:
+            # TODO
+            # Falta saber como obtener product y quantity
+            line = OrderDetail(order=order, product=product, quantity=quantity)
+
+        line.save()
+
+        # me guardo en algun sitio el pk del pedido, porque lo necesito para hacer el redirect
+        self.__myorder = order
+
+        return self.get(request, *args, **kwargs)
+
+    def get_redirect_url(self, *args, **kwargs):
+        success_message = f'Product {self.object.product.name} updated'
+        messages.success(self.request, (success_message))
+        return reverse('order_detail', kwargs={'pk': self.__myorder.pk})
