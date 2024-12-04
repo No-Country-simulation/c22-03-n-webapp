@@ -16,8 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name="index.html"), name='inicio'),
+    path('products/', include('products.urls')),
     path('user/', include('users.urls')),
     path("sales/", include("sales.urls")),
 ]
+
+if settings.DEBUG:  # Solo para desarrollo
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

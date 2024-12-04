@@ -1,0 +1,45 @@
+{% extends 'body.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="POST" action="." enctype="multipart/form-data">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-plus"></i>
+                    {{ title }}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                <h4 class="mb-3">Registro de productos</h4>
+                <div class="row">
+                    {% for field in form.visible_fields %}
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {% if field.name == "category" %}
+                            {{ field|add_class:"form-select"|attr:"autocomplete:off" }} <!-- Clase para dropdown -->
+                        {% else %}
+                            {{ field|add_class:"form-control"|attr:"autocomplete:off" }}
+                        {% endif %}
+                        {% comment %} {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %} {% endcomment %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% comment %} <h4 class="mb-3">Imágenes del Producto</h4>
+                <div class="form-group">
+                    <label for="images">Sube las imágenes</label>
+                    <input type="file" name="images" id="images" multiple class="form-control-file">
+                </div> {% endcomment %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-flat">
+                <i class="fas fa-save"></i> Crear Producto
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
