@@ -2,7 +2,7 @@ from django import forms
 from .models import Product, ProductImage
 
 class ProductForm(forms.ModelForm):
-    image = forms.ImageField(required=True, label="Imagen del producto")
+    images = forms.ImageField(required=True, label="Imagen del producto")
     
     class Meta:
         model = Product
@@ -13,7 +13,7 @@ class ProductForm(forms.ModelForm):
             'description_product',
             'status',
             'categories',
-            'image'
+            'images'
         ]
         widgets = {
             'categories': forms.CheckboxSelectMultiple()
