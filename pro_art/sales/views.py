@@ -4,7 +4,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from users.models import Users
 from .models import Order, Payment, OrderDetail
 from .forms import OrderDetailUpdateQuantityForm
 
@@ -23,9 +22,7 @@ class OrderListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # TODO
-        # modificarlo por el usuario logueado
-        context['customer'] = Users.objects.first()
+        context['title'] = 'Listado de Pedidos'
         return context
 
 
@@ -35,6 +32,7 @@ class OrderDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total'] = context['object'].total
+        context['title'] = 'Order Detail'
         return context
 
 
@@ -53,6 +51,7 @@ class OrderPaymentView(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         order = Order.objects.get(pk=self.order_pk)
         context['order'] = order
+        context['title'] = 'Payment'
         return context
 
     def get_success_url(self):

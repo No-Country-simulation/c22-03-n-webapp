@@ -27,7 +27,18 @@
                         <li><a href="#" class="dropdown-item"><i class="fas fa-shopping-cart"></i> Ventas</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'order_list' %}" class="nav-link">
+                        <i class="fa fa-address-card" aria-hidden="true"></i>
+                        My orders
+                    </a>
+                </li>
             </ul>
+        </div>
+        <div class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto" id="navbarText">
+            <span class="navbar-text">
+              {{ user }}
+            </span>
         </div>
         <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
             <li class="nav-item dropdown">

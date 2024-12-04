@@ -1,59 +1,46 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-<body>
+{% extends 'list.html' %}
 
-  <h4>Orders List</h4>
-
-<h1> {{customer.user_proart.user.username}}</h1>
-
-{% if messages %}
-<h1 class="alert alert-secondary" role="alert">
-  {% for message in messages %}
-    {{ message }}
+{% block messages %}
+  {% if messages %}
+    <h1 class="alert alert-secondary" role="alert">
+    {% for message in messages %}
+      {{ message }}
     {% endfor %}
-</h1>
-{% endif %}
-<form method="post" enctype="multipart/form-data">
-    <h1> {{customer.user_proart.user.name}}</h1>
-<br>
-    <table class="table" border="1">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">Order Number</th>
-          <th scope="col">Created at</th>
-          <th scope="col">Status</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
+    </h1>
+  {% endif %}
+{% endblock %}
+
+{% block columns %}
+<tr>
+  <th scope="col">Order Number</th>
+  <th scope="col">Created at</th>
+  <th scope="col">Status</th>
+  <th scope="col"></th>
+</tr>
+{% endblock %}
    
-        {% for o in object_list %}
-        <tr>
-            <td>{{o.id}}</td>
-            <td>{{o.created_at}}</td>
-            <td> {{o.status}}  </td>
-            <td>
-            {% if o.payment %}
-            pagado con fecha: {{ o.payment.created_at}}
-            {% elif o.status == 'CANCELED' %}
-            cancelado con fecha: {{ o.updated_at}}
-            {% else %}
-            pendiente de pago
-            {% endif %}
-            </td>
-              <td>
-            <a href="{% url 'order_detail' pk=o.id %}" type="button" >Detail</a>
-          </td>
-
-         
-
-
-        </tr>
-        {% endfor %}
-      </table>
-</form>
-</body>
-</html>
+{% block rows %}
+  {% for o in object_list %}
+  <tr>
+      <td>{{o.id}}</td>
+      <td>{{o.created_at|date:"Y-m-d"}}</td>
+      <td> {{o.status}}  </td>
+      <td>
+        {% if o.payment %}
+          Pagado con fecha: {{ o.payment.created_at|date:"Y-m-d"}}
+        {% elif o.status == 'CANCELED' %}
+          Cancelado con fecha: {{ o.updated_at|date:"Y-m-d"}}
+        {% else %}
+          Pendiente de pago
+        {% endif %}
+      </td>
+      <td>
+        <a href="{% url 'order_detail' pk=o.id %}" type="button"  class="btn btn-warning btn-xs btn-flat">
+          <i class="fas fa-edit"></i>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+{% endblock %}
+ 
+{% block button_add %}{% endblock %}
