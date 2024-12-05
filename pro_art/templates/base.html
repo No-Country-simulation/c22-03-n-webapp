@@ -22,29 +22,34 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{% url 'product_list' %}" data-bs-toggle="dropdown">
-                            <i class="fas fa-box"></i> Products
+                            <i class="fas fa-box"></i> Productos
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{% url 'product_list' %}">
-                                <i class="fas fa-list"></i> List Products</a>
+                                <i class="fas fa-list"></i> Listado Productos</a>
                             </li>
                             <li><a class="dropdown-item" href="{% url 'product_add' %}">
-                                <i class="fas fa-plus"></i> Create Product</a>
+                                <i class="fas fa-plus"></i> Crear Producto</a>
                             </li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'order_list' %}">
-                            <i class="fas fa-shopping-cart"></i> Sales
+                            <i class="fas fa-shopping-cart"></i> Ordenes
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'user_list' %}">
-                            <i class="fas fa-users"></i> Users
+                            <i class="fas fa-users"></i> Usuarios
                         </a>
                     </li>
                 </ul>
                 <div class="d-flex">
+                    <div class="text-white me-2 order-1 order-md-3 navbar-nav navbar-no-expand ml-auto" id="navbarText">
+                        <span class="navbar-text">
+                          {{ user }}
+                        </span>
+                    </div>
                     <button class="btn text-white me-2"><i class="fas fa-search"></i></button>
                     <button class="btn text-white me-2"><i class="fas fa-shopping-bag"></i></button>
                 </div>
