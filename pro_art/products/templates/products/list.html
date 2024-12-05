@@ -18,9 +18,9 @@
             <tr>
                 <td>
                     {% if product.images.first %}
-                    <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" style="width: 64px; height: 64px;">
+                        <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" style="width: 64px; height: 64px;">
                     {% else %}
-                    <p>Sin imagen</p>
+                        <p>Sin imagen</p>
                     {% endif %}
                 </td>
                 <td>{{ product.name }}</td>

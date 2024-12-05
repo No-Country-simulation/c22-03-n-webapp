@@ -26,8 +26,9 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='inicio'),
     path('products/', include('products.urls')),
     path('user/', include('users.urls')),
+    path("sales/", include("sales.urls")),
 ]
 
 if settings.DEBUG:  # Solo para desarrollo
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

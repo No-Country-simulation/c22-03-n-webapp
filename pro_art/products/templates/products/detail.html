@@ -17,7 +17,7 @@
                     <h5 class="card-title">Detalles</h5>
                     <p class="card-text"><strong>Categorías:</strong>
                         {% for category in product.categories.all %}
-                        <span class="badge badge-primary">{{ category.name }}</span>
+                            <span class="badge badge-primary">{{ category.name }}</span>
                         {% endfor %}
                     </p>
                     <p class="card-text"><strong>Cantidad:</strong> {{ product.quantities }}</p>
