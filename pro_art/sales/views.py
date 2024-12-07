@@ -5,7 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import Order, Payment, OrderDetail
+from .models import Order, Payment, OrderDetail, Users
 from .forms import OrderDetailUpdateQuantityForm
 
 
@@ -95,13 +95,20 @@ class AddProductToCart(RedirectView):
     """
 
     def post(self, request, *args, **kwargs):
-        order_pk = {'pk': self.object.order.pk}
-        if kwargs.objects.filter().exists():
-
-            # Obtener el ususario loguedo
-            # TODO
-            # Saber el usuario logueado
+        # Obtener el ususario loguedo
+        if not request.user.is_authenticated:
+            self.__redirect_to = "login"
+            return super().get(request, *args, **kwargs)
+        # TODO
+        # como relacionar usuario (Django) logueado con Users (pro_art)
         customer = Users.objects.first()
+
+        product_pk = {'product_pk': kwargs['produt_pk']}
+        product = Product.objects.filter(pk=product_pk).first()
+        if not product:
+            self.__redirect_to = "inicio"
+            return super().get(request, *args, **kwargs)
+
         # Buscar un order pending
         order = Order.objects.filter(
             status="PENDING", customer=customer).first()
@@ -111,24 +118,32 @@ class AddProductToCart(RedirectView):
             order.save()
 
         # Busco si el producto ya esta en el pedido
-        line = OrderDetail.objects.filter(product="pk", order=order).first()
-        # si el producto ya esta en el pedido, actualizo la cantidad
+        line = OrderDetail.objects.filter(product=product, order=order).first()
         if line:
+            # si el producto ya esta en el pedido, actualizo la cantidad
             line.quantity += 1
-        # Si no existe el pedido o no esta dentro del pedido el producto, lo añado(creo orderdetail)
         else:
-            # TODO
-            # Falta saber como obtener product y quantity
-            line = OrderDetail(order=order, product=product, quantity=quantity)
+            # Si no existe el pedido o no esta dentro del pedido el producto, lo añado(creo orderdetail)
+            line = OrderDetail(order=order, product=product, quantity=1)
 
+        # guardo los cambios de la linea de pedido
         line.save()
 
         # me guardo en algun sitio el pk del pedido, porque lo necesito para hacer el redirect
+        self.__redirect_to = "order_detail"
         self.__myorder = order
 
         return self.get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
-        success_message = f'Product {self.object.product.name} updated'
+        if self.__redirect_to == "order_detail":
+            success_message = f'Order {self.object.product.name} updated'
+            kwargs = {'pk': self.__myorder.pk}
+        elif self.__redirect_to == "inicio":
+            success_message = 'Product not found'
+            kwargs = {}
+        else:
+            success_message = 'Login up'
+            kwargs = {}
         messages.success(self.request, (success_message))
-        return reverse('order_detail', kwargs={'pk': self.__myorder.pk})
+        return reverse(self.__redirect_to, kwargs=kwargs)
