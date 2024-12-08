@@ -30,7 +30,9 @@
     </div>
     <form method="POST" action="{% url 'add_product_to_order' pk=product.pk %}">
         {% csrf_token %}
-        <button type="submit">Add cart</button>
+        <button type="submit" class="btn btn-primary d-flex align-items-center">
+            Agregar al carrito <i class="fas fa-shopping-cart ms-2"></i>
+        </button>
     </form>
 
     <a href="{% url 'product_list' %}" class="btn btn-secondary mt-4">Volver a la lista</a>

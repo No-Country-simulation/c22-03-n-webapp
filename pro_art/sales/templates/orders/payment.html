@@ -12,7 +12,7 @@
           <td>{{ order.total }}</td>
           <td>
             <button type="submit" class="btn btn-primary btn-flat btntest">
-              Confirm pay
+              Confirmar pago
             </button>  
           </td> 
         </tr>
@@ -27,12 +27,12 @@
 
 {% block more_button %}
   <a href="{% url 'order_detail' pk=order.pk %}" type="submit" class="btn btn-primary btn-flat" >
-    Return to Order
+    Volver al pedido
   </a>
 {% endblock %}
 
 {% block button_add %}
   <a href="{% url 'order_list' %}" type="submit"  class="btn btn-primary btn-flat">
-    Return to Order List
+    Volver al listado de pedidos
   </a>
 {% endblock %}
