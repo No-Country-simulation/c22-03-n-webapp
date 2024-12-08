@@ -48,12 +48,14 @@ main {
   font-weight: 600;
 }
 
+
 .navbar-collapse#navbarNav {
   justify-content: right;
 }
 
 .footer-bg {
   background-color: var(--finch); 
+  
 }
 
 .social {
