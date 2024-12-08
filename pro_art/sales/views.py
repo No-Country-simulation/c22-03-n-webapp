@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Order, Payment, OrderDetail
 from .forms import OrderDetailUpdateQuantityForm
 from products.models import Product
-from users.models import Users
+from users.models import UserProfile
 
 
 class OrderListView(ListView):
@@ -88,19 +88,14 @@ class OrderDetailUpdateView(SuccessMessageMixin, UpdateView):
 
 
 class AddProductToCart(RedirectView):
-    def __init__(self, **kwargs: Any) -> None:
-        print("__init___")
-        return super().__init__(**kwargs)
-
     def post(self, request, *args, **kwargs):
-        print("post", request.user.is_authenticated)
         # Obtener el ususario loguedo
         if not request.user.is_authenticated:
             self.__redirect_to = "login"
             return super().get(request, *args, **kwargs)
         # TODO
         # como relacionar usuario (Django) logueado con Users (pro_art)
-        customer = Users.objects.first()
+        customer = UserProfile.objects.first()
 
         product_pk = kwargs['pk']
         product = Product.objects.filter(pk=product_pk).first()
@@ -136,7 +131,6 @@ class AddProductToCart(RedirectView):
         return self.get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
-        print("get_redirect_url --> ", self.__redirect_to)
         if self.__redirect_to == "order_detail":
             success_message = f'Producto {self.__product.name} añadido al carrito'
             kwargs = {'pk': self.__myorder.pk}
