@@ -26,13 +26,13 @@
 {% endblock %}
 
 {% block more_button %}
-  <a href="{% url 'order_detail' pk=order.pk %}" type="submit" >
+  <a href="{% url 'order_detail' pk=order.pk %}" type="submit" class="btn btn-primary btn-flat" >
     Return to Order
   </a>
 {% endblock %}
 
 {% block button_add %}
-  <a href="{% url 'order_list' %}" type="submit" >
+  <a href="{% url 'order_list' %}" type="submit"  class="btn btn-primary btn-flat">
     Return to Order List
   </a>
 {% endblock %}

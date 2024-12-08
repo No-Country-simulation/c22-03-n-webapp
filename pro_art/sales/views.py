@@ -14,6 +14,7 @@ from users.models import Users
 
 class OrderListView(ListView):
     model = Order
+    ordering = ['-pk']
     # TODO
     # debe de estar logueado
 
@@ -36,7 +37,7 @@ class OrderDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total'] = context['object'].total
-        context['title'] = 'Order Detail'
+        context['title'] = 'Detalles del pedido'
         return context
 
 
@@ -55,11 +56,11 @@ class OrderPaymentView(SuccessMessageMixin, CreateView):
         context = super().get_context_data(**kwargs)
         order = Order.objects.get(pk=self.order_pk)
         context['order'] = order
-        context['title'] = 'Payment'
+        context['title'] = 'Pagos'
         return context
 
     def get_success_url(self):
-        success_message = 'Pay correct !'
+        success_message = 'Pagado correctamente !'
         messages.success(self.request, (success_message))
         return reverse('order_list')
 
@@ -81,22 +82,12 @@ class OrderDetailUpdateView(SuccessMessageMixin, UpdateView):
 
     # Redireccionamos a la página principal luego de actualizar un registro
     def get_success_url(self):
-        success_message = f'Product {self.object.product.name} updated'
+        success_message = f'Producto {self.object.product.name} actualizado'
         messages.success(self.request, (success_message))
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 
 
 class AddProductToCart(RedirectView):
-    """
-    model = OrderDetail
-    template_name = 'orders/detail.html'
-    fields = '__all__'
-    def get_success_url(self):
-        success_message = f'Product {self.object.product.name} added'
-        messages.success(self.request, (success_message))
-        return reverse('order_detail', kwargs={'pk': self.object.order.pk})
-    """
-
     def __init__(self, **kwargs: Any) -> None:
         print("__init___")
         return super().__init__(**kwargs)
@@ -147,13 +138,13 @@ class AddProductToCart(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         print("get_redirect_url --> ", self.__redirect_to)
         if self.__redirect_to == "order_detail":
-            success_message = f'Order {self.__product.name} updated'
+            success_message = f'Producto {self.__product.name} añadido al carrito'
             kwargs = {'pk': self.__myorder.pk}
         elif self.__redirect_to == "inicio":
-            success_message = 'Product not found'
+            success_message = 'Producto no encontrado'
             kwargs = {}
         else:
-            success_message = 'Login up'
+            success_message = 'Debes de estar logueado'
             kwargs = {}
         messages.success(self.request, (success_message))
         return reverse(self.__redirect_to, kwargs=kwargs)
