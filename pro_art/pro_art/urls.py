@@ -26,7 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name="index.html"), name='inicio'),
     path('products/', include('products.urls')),
-    path('user/', include('users.urls')),
+    path('', include('network.urls', namespace='network')),
+    path('', include('users.urls', namespace='users')),
     path("sales/", include("sales.urls")),
 ]
 
