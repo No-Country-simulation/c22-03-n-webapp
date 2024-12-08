@@ -1,3 +1,4 @@
+from typing import Any
 from django.views.generic.base import RedirectView
 from django.urls import reverse
 from django.contrib import messages
@@ -5,8 +6,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .models import Order, Payment, OrderDetail, Users
+from .models import Order, Payment, OrderDetail
 from .forms import OrderDetailUpdateQuantityForm
+from products.models import Product
+from users.models import Users
 
 
 class OrderListView(ListView):
@@ -94,7 +97,12 @@ class AddProductToCart(RedirectView):
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
     """
 
+    def __init__(self, **kwargs: Any) -> None:
+        print("__init___")
+        return super().__init__(**kwargs)
+
     def post(self, request, *args, **kwargs):
+        print("post", request.user.is_authenticated)
         # Obtener el ususario loguedo
         if not request.user.is_authenticated:
             self.__redirect_to = "login"
@@ -103,7 +111,7 @@ class AddProductToCart(RedirectView):
         # como relacionar usuario (Django) logueado con Users (pro_art)
         customer = Users.objects.first()
 
-        product_pk = {'product_pk': kwargs['produt_pk']}
+        product_pk = kwargs['pk']
         product = Product.objects.filter(pk=product_pk).first()
         if not product:
             self.__redirect_to = "inicio"
@@ -132,12 +140,14 @@ class AddProductToCart(RedirectView):
         # me guardo en algun sitio el pk del pedido, porque lo necesito para hacer el redirect
         self.__redirect_to = "order_detail"
         self.__myorder = order
+        self.__product = product
 
         return self.get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
+        print("get_redirect_url --> ", self.__redirect_to)
         if self.__redirect_to == "order_detail":
-            success_message = f'Order {self.object.product.name} updated'
+            success_message = f'Order {self.__product.name} updated'
             kwargs = {'pk': self.__myorder.pk}
         elif self.__redirect_to == "inicio":
             success_message = 'Product not found'

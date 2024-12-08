@@ -6,6 +6,7 @@ from .views import (
     OrderPaymentView,
     OrderDetailDeleteView,
     OrderDetailUpdateView,
+    AddProductToCart,
 )
 
 
@@ -31,8 +32,9 @@ urlpatterns = [
         template_name="orders/detail.html"),
         name='order_detail_update'
     ),
-    path('orders/add_product/<int:product_pk>', OrderDetailUpdateView.as_view(
-        template_name="orders/detail.html"),
+    path('orders/add_product/<int:pk>', AddProductToCart.as_view(
+        # template_name="orders/detail.html"
+    ),
         name='add_product_to_order'
     ),
 ]
