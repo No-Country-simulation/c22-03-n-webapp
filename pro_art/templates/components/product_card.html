@@ -9,7 +9,9 @@
           </button>
       </div>
       <div class="card-body">
-          <span class="badge bg-secondary mb-2">{{ product.categories }}</span>
+          {% for category in product.categories.all %}
+            <span class="badge bg-secondary mb-2">{{ category.name }}</span>
+          {% endfor %}
           <h3 class="card-title">{{ product.name }}</h3>
           <p class="card-text text-muted">{{ product.status }} </p>
           <div class="d-flex justify-content-between align-items-center"></div>

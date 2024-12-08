@@ -27,8 +27,15 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-family: 'Crimson Text', serif;
   background-color: var(--cream-50);
+}
+
+main {
+  flex: 1;
 }
 
 .navbar {
@@ -42,9 +49,21 @@ body {
 }
 
 
+.navbar-collapse#navbarNav {
+  justify-content: right;
+}
+
 .footer-bg {
   background-color: var(--finch); 
   
+}
+
+.social {
+  color: black;
+}
+
+.social:hover {
+  color: var(--sage-200);
 }
 
 .hero {
