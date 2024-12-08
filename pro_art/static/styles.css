@@ -41,8 +41,10 @@ body {
   font-weight: 600;
 }
 
+
 .footer-bg {
   background-color: var(--finch); 
+  
 }
 
 .hero {

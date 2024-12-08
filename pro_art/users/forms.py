@@ -1,54 +1,73 @@
-from django.forms import *
-
-from users.models import Users
-
-class UserForm(ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # for form in self.visible_fields():
-        #     form.field.widget.attrs['class']='form-control'
-        #     form.field.widget.attrs['autocomplete']='off'
-        self.fields['dni'].widget.attrs['autofocus']=True
+from django import forms
 
 
-    class Meta:
-        model = Users
-        fields = '__all__'
-        widgets = {
-            'dni': NumberInput(
-                attrs={
-                    'placeholder' : 'Ingrese su dni',
-                }
-            ),
-            'name': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese su nombre',
-                }
-            ),
-             'surname': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese su apellido',
-                }
-            ),
-            'phone_number': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese su número de teléfono',
-                }
-            ),
-            'email': TextInput(
-                attrs={
-                    'placeholder' : 'Ingrese su email',
-                }
-            ),
-            'direction': Textarea(
-                attrs={
-                    'placeholder' : 'Ingrese su dirección',
-                }
-            ),
-            'birthdate': NumberInput(
-                attrs={
-                    'placeholder' : 'Ingrese su fecha de nacimiento',
-                }
-            )
-        }
-       
+class UserLoginForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.TextInput(
+            attrs={
+                'id': 'loginEmail',
+                'type': 'email',
+                'class': 'form-control'
+            }
+        )
+    )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'id': 'loginPassword',
+            'type': 'password',
+            'class': 'form-control',
+        })
+    )
+
+
+class UserSignUpForm(forms.Form):
+    email = forms.EmailField(
+        widget=forms.TextInput(
+            attrs={
+                'id': 'signupEmail',
+                'type': 'email',
+                'class': 'form-control'
+            }
+        )
+    )
+
+    first_name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'class': 'form-control'
+            }
+        ))
+
+    last_name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                'type': 'text',
+                'class': 'form-control'
+            }
+        ))
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'id': 'signupPassword',
+                'type': 'password',
+                'class': 'form-control'
+            }
+        ))
+
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'type': 'password',
+                'class': 'form-control'
+            }
+        ))
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password'] != cd['password2']:
+            raise forms.ValidationError('Las Contraseñas no coinciden')
+        return cd['password2']

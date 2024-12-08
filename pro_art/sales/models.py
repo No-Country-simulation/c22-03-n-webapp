@@ -4,7 +4,7 @@ from django.db import models
 from django.db import transaction
 
 from share.models import TimeStampedModel
-from users.models import Users
+from users.models import *
 from products.models import Product
 
 STATUS_ORDER = (
@@ -17,7 +17,7 @@ STATUS_ORDER = (
 
 class Order(TimeStampedModel):
     customer = models.ForeignKey(
-        Users,
+        UserProfile,
         on_delete=models.CASCADE,
         related_name="orders"
     )
