@@ -7,3 +7,5 @@ uploads/
 __pycache__/*
 pro_art/media/*
 pro_art/static/*
+media/
+static
