@@ -29,7 +29,22 @@
                   </a>
               </li>
               <li class="nav-item">
-                  <span class="nav-link">{{ user }}</span>
+                <div class="d-flex">
+                    <div class="d-flex align-items-center me-3">
+                        {% if user.is_authenticated %}
+                        <a href={% url 'users:profile' %}>
+                            <img src={{ user.profile_pic.url }} class="rounded-circle" height="30" width='30' alt="" loading="lazy" /> 
+                        </a>
+                        {% else %}
+                      
+                            <a class="nav-link" data-mdb-toggle='modal' data-mdb-target='#loginModal' href="#">
+                                <i class="fas fa-users"></i> Iniciar Sesión
+                            </a>
+                        
+                         
+                        {% endif %}
+            
+                    </div>         
               </li>
               <li class="nav-item">
                   <button class="btn text-white"><i class="fas fa-search"></i></button>
