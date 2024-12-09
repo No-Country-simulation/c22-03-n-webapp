@@ -4,7 +4,7 @@ from django.db import models
 from django.db import transaction
 
 from share.models import TimeStampedModel
-from users.models import *
+from users.models import UserProfile
 from products.models import Product
 
 STATUS_ORDER = (
