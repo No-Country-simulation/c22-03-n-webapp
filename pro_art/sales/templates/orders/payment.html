@@ -11,9 +11,11 @@
           <td>Total a pagar</td>
           <td>{{ order.total }}</td>
           <td>
-            <button type="submit" class="btn btn-primary btn-flat btntest">
-              Confirmar pago
-            </button>  
+            {% if not order.payment %}
+              <button type="submit" class="btn btn-primary btn-flat btntest">
+                Confirmar pago
+              </button>  
+            {% endif %}
           </td> 
         </tr>
       </thead>

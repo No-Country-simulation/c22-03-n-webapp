@@ -1,4 +1,4 @@
-from typing import Any
+from django.http import Http404
 from django.views.generic.base import RedirectView
 from django.urls import reverse
 from django.contrib import messages
@@ -10,29 +10,45 @@ from .models import Order, Payment, OrderDetail
 from .forms import OrderDetailUpdateQuantityForm
 from products.models import Product
 from users.models import UserProfile
+from django.shortcuts import redirect
 
 
-class OrderListView(ListView):
+class OrderViewAbstract(object):
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_anonymous:
+            return redirect("/")
+        return super().dispatch(request, *args, **kwargs)
+
+
+class OrderListView(OrderViewAbstract, ListView):
     model = Order
     ordering = ['-pk']
-    # TODO
-    # debe de estar logueado
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        # TODO
-        # filtrar por usuario logueado
+        queryset = super().get_queryset().filter(customer=self.request.user)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context['title'] = 'Listado de Pedidos'
         return context
 
 
-class OrderDetailView(DetailView):
+class OrderDetailView(OrderViewAbstract, DetailView):
     model = Order
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(customer=self.request.user)
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            return redirect("/")
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,9 +57,21 @@ class OrderDetailView(DetailView):
         return context
 
 
-class OrderPaymentView(SuccessMessageMixin, CreateView):
+class OrderPaymentView(OrderViewAbstract, SuccessMessageMixin, CreateView):
     model = Payment
     fields = ("order", )
+
+    def dispatch(self, request, *args, **kwargs):
+        result = super().dispatch(request, *args, **kwargs)
+
+        self.order_pk = self.kwargs.get('order_pk')
+        order = Order.objects.filter(
+            pk=self.order_pk,
+            customer=self.request.user
+        ).first()
+        if not order:
+            return redirect("/")
+        return result
 
     def get_form_kwargs(self):
         self.order_pk = self.kwargs.get('order_pk')
@@ -54,7 +82,10 @@ class OrderPaymentView(SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        order = Order.objects.get(pk=self.order_pk)
+        order = Order.objects.filter(pk=self.order_pk).first()
+        if order:
+            context['order'] = order
+
         context['order'] = order
         context['title'] = 'Pagos'
         return context
@@ -65,9 +96,13 @@ class OrderPaymentView(SuccessMessageMixin, CreateView):
         return reverse('order_list')
 
 
-class OrderDetailDeleteView(SuccessMessageMixin, DeleteView):
+class OrderDetailDeleteView(OrderViewAbstract, SuccessMessageMixin, DeleteView):
     model = OrderDetail
     fields = "__all__"
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(order__customer=self.request.user)
+        return queryset
 
     # Redireccionamos a la página principal luego de eliminar un registro
     def get_success_url(self):
@@ -76,9 +111,13 @@ class OrderDetailDeleteView(SuccessMessageMixin, DeleteView):
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 
 
-class OrderDetailUpdateView(SuccessMessageMixin, UpdateView):
+class OrderDetailUpdateView(OrderViewAbstract, SuccessMessageMixin, UpdateView):
     model = OrderDetail
     form_class = OrderDetailUpdateQuantityForm
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(order__customer=self.request.user)
+        return queryset
 
     # Redireccionamos a la página principal luego de actualizar un registro
     def get_success_url(self):
@@ -90,13 +129,10 @@ class OrderDetailUpdateView(SuccessMessageMixin, UpdateView):
 class AddProductToCart(RedirectView):
     def post(self, request, *args, **kwargs):
         # Obtener el ususario loguedo
-        if not request.user.is_authenticated:
-            self.__redirect_to = "login"
-            return super().get(request, *args, **kwargs)
-        # TODO
-        # como relacionar usuario (Django) logueado con Users (pro_art)
-        customer = UserProfile.objects.first()
+        if not request.user.is_authenticated or self.request.user.is_anonymous:
+            return redirect("/")
 
+        customer = self.request.user
         product_pk = kwargs['pk']
         product = Product.objects.filter(pk=product_pk).first()
         if not product:
