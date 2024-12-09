@@ -106,7 +106,7 @@ class OrderDetailDeleteView(OrderViewAbstract, SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro
     def get_success_url(self):
-        success_message = f'Product  {self.object.product.name} deleted!'
+        success_message = f'Producto  {self.object.product.name} borrado del carrito'
         messages.success(self.request, (success_message))
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 

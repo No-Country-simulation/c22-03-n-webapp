@@ -71,6 +71,7 @@
     {% include 'components/navbar.html' %}
 
     <main>
+        {% block messages %}{% endblock %}
         {% block content %}{% endblock %}
     </main>
 
