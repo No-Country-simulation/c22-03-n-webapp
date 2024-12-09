@@ -9,7 +9,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Order, Payment, OrderDetail
 from .forms import OrderDetailUpdateQuantityForm
 from products.models import Product
-from users.models import UserProfile
 from django.shortcuts import redirect
 
 
@@ -96,27 +95,35 @@ class OrderPaymentView(OrderViewAbstract, SuccessMessageMixin, CreateView):
         return reverse('order_list')
 
 
-class OrderDetailDeleteView(OrderViewAbstract, SuccessMessageMixin, DeleteView):
+class OrderDetailDeleteView(
+    OrderViewAbstract, SuccessMessageMixin, DeleteView
+):
     model = OrderDetail
     fields = "__all__"
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(order__customer=self.request.user)
+        queryset = super().get_queryset().filter(
+            order__customer=self.request.user
+        )
         return queryset
 
     # Redireccionamos a la página principal luego de eliminar un registro
     def get_success_url(self):
-        success_message = f'Producto  {self.object.product.name} borrado del carrito'
+        success_message = f'Producto  {self.object.product.name} borrado del carrito'  # noqa
         messages.success(self.request, (success_message))
         return reverse('order_detail', kwargs={'pk': self.object.order.pk})
 
 
-class OrderDetailUpdateView(OrderViewAbstract, SuccessMessageMixin, UpdateView):
+class OrderDetailUpdateView(
+    OrderViewAbstract, SuccessMessageMixin, UpdateView
+):
     model = OrderDetail
     form_class = OrderDetailUpdateQuantityForm
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(order__customer=self.request.user)
+        queryset = super().get_queryset().filter(
+            order__customer=self.request.user
+        )
         return queryset
 
     # Redireccionamos a la página principal luego de actualizar un registro
@@ -153,13 +160,15 @@ class AddProductToCart(RedirectView):
             # si el producto ya esta en el pedido, actualizo la cantidad
             line.quantity += 1
         else:
-            # Si no existe el pedido o no esta dentro del pedido el producto, lo añado(creo orderdetail)
+            # Si no existe el pedido o no esta dentro del pedido el producto,
+            # lo añado(creo orderdetail)
             line = OrderDetail(order=order, product=product, quantity=1)
 
         # guardo los cambios de la linea de pedido
         line.save()
 
-        # me guardo en algun sitio el pk del pedido, porque lo necesito para hacer el redirect
+        # me guardo en algun sitio el pk del pedido,
+        # porque lo necesito para hacer el redirect
         self.__redirect_to = "order_detail"
         self.__myorder = order
         self.__product = product
@@ -168,7 +177,7 @@ class AddProductToCart(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         if self.__redirect_to == "order_detail":
-            success_message = f'Producto {self.__product.name} añadido al carrito'
+            success_message = f'Producto {self.__product.name} añadido al carrito'  # noqa
             kwargs = {'pk': self.__myorder.pk}
         elif self.__redirect_to == "inicio":
             success_message = 'Producto no encontrado'
