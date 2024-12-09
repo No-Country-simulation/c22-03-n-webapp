@@ -25,7 +25,7 @@
     </section>
 
     <!-- Categories -->
-    <section class="categories py-5 bg-light">
+<!--     <section class="categories py-5 bg-light">
         <div class="container">
             <h2 class="text-center mb-5">Categorias</h2>
             <div class="row g-4">
@@ -34,12 +34,11 @@
                 {% endfor %}
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- Products -->
-    <section class="featured-products py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">Productos</h2>
+    <section class="featured-products py-5">        
+       <div class="container">
             <div class="row g-4">
                 {% for product in products %}
                     {% include 'components/product_card.html' with product=product %}

@@ -1,6 +1,6 @@
-{% extends 'body.html' %}
+{% extends 'base.html' %}
 {% block content %}
-<section class="featured-products py-5">
+<section class="py-5">
     <div class="container">
         <h2 class="text-center mb-5">Lista de Productos</h2>
         <div class="row g-4">
@@ -18,16 +18,15 @@
                         <i class="far fa-heart"></i>
                     </button>
                     <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <div class="mb-2">
-                            {% for category in product.categories.all %}
-                            <span class="badge bg-primary">{{ category.name }}</span>
-                            {% endfor %}
-                        </div>
+                        {% for category in product.categories.all %}
+                        <span class="badge bg-secondary mb-2">{{ category.name }}</span>
+                        {% endfor %}
+                        <span class="badge {% if product.status == 'AVAILABLE' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ product.get_status_display }}
+                        </span>
+                        <h3 class="card-title">{{ product.name }}</h3>
                         <p class="card-text">
-                            <span class="badge {% if product.status == 'active' %}bg-success{% else %}bg-secondary{% endif %}">
-                                {{ product.get_status_display }}
-                            </span>
+                            <span class="price">$ {{ product.price_product|floatformat:2 }}</span>
                         </p>
                         <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">Ver Detalles</a>
                     </div>
