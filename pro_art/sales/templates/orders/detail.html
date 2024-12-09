@@ -42,17 +42,19 @@
       <td>{{od.total}}</td>
       <td>
         {% if order.status == 'PENDING' %}
-          <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="quantity" value='{{od.quantity|add:"-1"}}'>
-            <button type="submit" class="btn btn-xs btn-flat">
-              <i class="fas fa-minus"></i>
-            </button>
-          </form>
+          {% if od.quantity > 1 %}
+            <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" name="quantity" value='{{od.quantity|add:"-1"}}'>
+              <button type="submit" class="btn border">
+                <i class="fas fa-minus"></i>
+              </button>
+            </form>
+          {% endif %}
           <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="quantity" value="{{od.quantity|add:1}}">
-            <button type="submit" class="btn btn-xs btn-flat">
+            <button type="submit" class="btn border">
               <i class="fas fa-plus"></i>
             </button>
           </form>
@@ -62,7 +64,7 @@
         {% if order.status == 'PENDING' %}
           <form method="post" action="{% url 'order_detail_delete' pk=od.pk %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <button type="submit" class="btn btn-xs btn-flat btn-danger">
+            <button type="submit" class="btn btn-danger">
               <i class="fas fa-trash"></i>
             </button> 
           </form>
@@ -86,9 +88,11 @@
 {% else %}
   <div class="alert alert-info" role="alert">
     Total a pagar: {{ total }}
-    <a href="{% url 'order_payment' order_pk=object.pk %}" class="btn btn-primary btn-flat" >
-      Pagar
-    </a>
+    {% if total %}
+      <a href="{% url 'order_payment' order_pk=object.pk %}" class="btn btn-primary btn-flat" >
+        Pagar
+      </a>
+    {% endif %}
   </div>
 {% endif %}
 
