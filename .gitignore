@@ -5,7 +5,5 @@ uploads/
 .DS_Store
 *.pyc
 __pycache__/*
-pro_art/media/*
 pro_art/static/*
-media/
-static
+pro_art/media/products_images/*
