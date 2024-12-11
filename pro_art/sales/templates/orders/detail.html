@@ -2,11 +2,11 @@
 
 {% block messages %}
   {% if messages %}
-    <h1 class="alert alert-secondary" role="alert">
+    <h4 class="alert alert-secondary" role="alert">
     {% for message in messages %}
       {{ message }}
     {% endfor %}
-    </h1>
+    </h4>
   {% endif %}
 {% endblock %}
 
@@ -38,8 +38,8 @@
       <td>{{od.created_at|date:"Y-m-d"}}</td>
       <td>{{od.product.name}}</td>
       <td>{{od.quantity}}</td>
-      <td>{{od.product.price_product}}</td>
-      <td>{{od.total}}</td>
+      <td>{{od.product.price_product|floatformat:2}}</td>
+      <td>{{od.total|floatformat:2}}</td>
       <td>
         {% if order.status == 'PENDING' %}
           {% if od.quantity > 1 %}
@@ -86,8 +86,8 @@
     Cancelado con fecha: {{ object.updated_at|date:"Y-m-d" }}
   </div>
 {% else %}
-  <div class="alert alert-info" role="alert">
-    Total a pagar: {{ total }}
+  <div class="alert alert-success" role="alert">
+    Total a pagar: $ {{ total|floatformat:2 }}
     {% if total %}
       <a href="{% url 'order_payment' order_pk=object.pk %}" class="btn btn-primary btn-flat" >
         Pagar

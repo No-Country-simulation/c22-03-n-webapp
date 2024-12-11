@@ -137,6 +137,8 @@ class AddProductToCart(RedirectView):
     def post(self, request, *args, **kwargs):
         # Obtener el ususario loguedo
         if not request.user.is_authenticated or self.request.user.is_anonymous:
+            success_message = 'Debes de estar logueado'
+            messages.success(self.request, (success_message))
             return redirect("/")
 
         customer = self.request.user

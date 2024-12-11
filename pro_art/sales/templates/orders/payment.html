@@ -9,7 +9,7 @@
       <thead>
         <tr>
           <td>Total a pagar</td>
-          <td>{{ order.total }}</td>
+          <td> $ {{ order.total|floatformat:2 }}</td>
           <td>
             {% if not order.payment %}
               <button type="submit" class="btn btn-primary btn-flat btntest">
