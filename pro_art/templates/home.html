@@ -1,31 +1,49 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{{ title }}</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/css/adminlte.min.css' %}">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    <!-- jQuery -->
-    <script src="{% static 'lib/adminlte-3.0.4/plugins/jquery/jquery.min.js' %}"></script>
-    <!-- Bootstrap 4 -->
-    <script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <!-- AdminLTE App -->
-    <script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
-    <!-- bloque head -->
-    {% block head%}
+{% extends 'base.html' %}
 
-    
+{% block content %}
+    <section class="hero py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 mb-4">Productos Artesanales</h1>
+                    <p class="lead mb-4">
+                        Descubra piezas únicas hechas a mano que cuentan historias a través de su artesanía.
+                        Cada artículo de nuestra colección está creado cuidadosamente por artesanos expertos que vierten su pasión en cada detalle.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-primary btn-lg">Shop Now</button>
+                    <!-- <button class="btn btn-outline-primary btn-lg">About Us</button> -->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?ixlib=rb-4.0.3" 
+                         alt="Handcrafted pottery collection" 
+                         class="img-fluid rounded-4 hero-image">
+                </div>
+            </div>
+        </div>
+    </section>
 
-    {% endblock %}
-</head>
-{% block body %}
+    <!-- Categories -->
+<!--     <section class="categories py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Categorias</h2>
+            <div class="row g-4">
+                {% for category in categories %}
+                    {% include 'components/category_card.html' with category=category %}
+                {% endfor %}
+            </div>
+        </div>
+    </section> -->
 
+    <!-- Products -->
+    <section class="featured-products py-5">        
+       <div class="container">
+            <div class="row g-4">
+                {% for product in products %}
+                    {% include 'components/product_card.html' with product=product %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 {% endblock %}
-</html>

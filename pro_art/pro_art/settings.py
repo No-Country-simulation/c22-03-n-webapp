@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-1nm)dt6v$ub!!5kk)^if%v(zf$nk(gp1&v*m@p9o!=0wgqd%5x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "*.pythonanywhere.com", ".pythonanywhere.com", "c22-03-n-webapp.onrender.com","*.onrender.com",".onrender.com"]
 
 
 # Application definition
@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'products',
     'sales',
+    'network',
     'users',
+ 
     # Libs
     'widget_tweaks',
 ]
@@ -74,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users.context_processors.login_form',
             ],
         },
     },
@@ -124,9 +127,13 @@ USE_TZ = True
 # python manage.py collectstatic en la terminal para recoger los archivos estáticos
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = "users.UserProfile"

@@ -4,6 +4,17 @@ from django.urls import reverse_lazy
 from products.forms import ProductForm
 from .models import *
 from django.views.generic import ListView, CreateView,DetailView
+from django.views.generic.base import RedirectView
+from django.shortcuts import redirect
+
+class ProductViewAbstract(object):
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_anonymous:
+            return redirect("/")
+        return super().dispatch(request, *args, **kwargs)
+
+
 
 # Vistas de productos
 def product_list(request):
@@ -12,6 +23,8 @@ def product_list(request):
         'products': Product.objects.prefetch_related("categories","images").all()
     }
     return render(request, "/list.html", data)
+
+
 
 
 class Product_listView(ListView):
@@ -41,9 +54,7 @@ class Product_detailView(DetailView):
         }
         return render(request, "products/detail.html", context)
 
-
-    
-class Product_createView(CreateView):
+class Product_createView(ProductViewAbstract, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'products/create.html'

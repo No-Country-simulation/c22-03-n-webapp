@@ -1,41 +1,40 @@
-{% extends 'body.html' %}
+{% extends 'base.html' %}
 {% block content %}
-
-<div class="container">
-    <h1 class="mb-4">Lista de Productos</h1>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Categorías</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Lista de Productos</h2>
+        <div class="row g-4">
             {% for product in products %}
-            <tr>
-                <td>
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100">
                     {% if product.images.first %}
-                        <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" style="width: 64px; height: 64px;">
+                        <img src="{{ product.images.first.image.url }}" class="card-img-top" alt="{{ product.name }}">
                     {% else %}
-                        <p>Sin imagen</p>
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
                     {% endif %}
-                </td>
-                <td>{{ product.name }}</td>
-                <td>
-                    {% for category in product.categories.all %}
-                    <span class="badge badge-primary">{{ category.name }}</span>
-                    {% endfor %}
-                </td>
-                <td>{{ product.get_status_display }}</td>
-                <td>
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-info btn-sm">Detalles</a>
-                </td>
-            </tr>
+                    <button class="btn btn-light rounded-circle favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <div class="card-body">
+                        {% for category in product.categories.all %}
+                        <span class="badge bg-secondary mb-2">{{ category.name }}</span>
+                        {% endfor %}
+                        <span class="badge {% if product.status == 'AVAILABLE' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ product.get_status_display }}
+                        </span>
+                        <h3 class="card-title">{{ product.name }}</h3>
+                        <p class="card-text">
+                            <span class="price">$ {{ product.price_product|floatformat:2 }}</span>
+                        </p>
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
