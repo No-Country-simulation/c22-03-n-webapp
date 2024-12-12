@@ -3,6 +3,8 @@ from pro_art import settings
 from products.views import *
 from django.conf.urls.static import static
 
+
+
 urlpatterns = [
     path('listado/', Product_listView.as_view(), name='product_list'),
     path('registro/', Product_createView.as_view(), name='product_add'),
