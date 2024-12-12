@@ -148,6 +148,14 @@ class AddProductToCart(RedirectView):
             self.__redirect_to = "inicio"
             return super().get(request, *args, **kwargs)
 
+        # Buscar el estado del producto AVALAILABE
+        statusProduct = Product.objects.filter(pk=product_pk,
+                                               status="AVAILABLE").first()
+        if not statusProduct:
+            success_message = 'El producto no está disponible'
+            messages.success(self.request, (success_message))
+            return redirect("/")
+
         # Buscar un order pending
         order = Order.objects.filter(
             status="PENDING", customer=customer).first()
