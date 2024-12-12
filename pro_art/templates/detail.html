@@ -21,6 +21,29 @@
             </h3>
         </div>
         <div class="card-body">
+            {% block subcontents %}
+            <table class="table" id="data">
+                <thead>
+                    {% block  invoicecolumns %}
+
+                    {% endblock   %}
+                </thead>
+                <thead>
+                    {% block  invoicecolumnscustomer %}
+
+                    {% endblock   %}
+                </thead>
+
+                <tbody>
+                    {% block  invoicerows %}
+
+                    {% endblock   %}
+                </tbody>
+            </table>
+            {% endblock %}
+        </div>
+    
+        <div class="card-body">
             {% block subcontent %}
             <table class="table" id="data">
                 <thead>

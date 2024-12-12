@@ -7,6 +7,7 @@ from .views import (
     OrderDetailDeleteView,
     OrderDetailUpdateView,
     AddProductToCart,
+    InvoiceDetailView,
 )
 
 
@@ -37,4 +38,7 @@ urlpatterns = [
     ),
         name='add_product_to_order'
     ),
+    path('invoice/detail/<int:pk>', InvoiceDetailView.as_view(
+         template_name="invoice/index.html"),
+         name='invoice_detail'),
 ]

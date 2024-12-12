@@ -197,3 +197,25 @@ class AddProductToCart(RedirectView):
             kwargs = {}
         messages.success(self.request, (success_message))
         return reverse(self.__redirect_to, kwargs=kwargs)
+
+
+class InvoiceDetailView(OrderViewAbstract, DetailView):
+    model = Order
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(customer=self.request.user)
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+        except Http404:
+            return redirect("/")
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total'] = context['object'].total
+        context['title'] = 'Factura'
+        return context

@@ -36,7 +36,12 @@
       </td>
       <td>
         <a href="{% url 'order_detail' pk=o.id %}">
-          <i class="fas fa-edit"></i>
+          <i class="fas fa-edit"> Ver Detalle</i>
+        </a>
+      </td>
+      <td>
+        <a href="{% url 'invoice_detail' pk=o.id %}">
+          <i class="fas fa-edit">Ver Factura</i>
         </a>
       </td>
     </tr>

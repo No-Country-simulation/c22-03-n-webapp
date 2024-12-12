@@ -1,0 +1,81 @@
+{% extends 'detail.html' %}
+
+
+{% block  invoicecolumns %}
+<tr>
+    <th scope="col">Fecha Factura</th>
+    <td scope="col">Fecha </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+
+</tr>
+<tr>
+    <th scope="col">Número de Factura</th>
+    <td scope="col">Número </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+
+{% endblock %}
+
+{% block  invoicerows %}
+  
+
+{% endblock %}
+
+
+{% block  invoicecolumnscustomer %}
+    <tr>
+        <th scope="col">Cliente</th>
+        <td scope="col">Pepe </td>
+    </tr>
+    <tr>
+        <th scope="col">Email</th>
+        <td scope="col">Pepe@pepe </td>
+    </tr>
+
+
+{% endblock %}
+
+{% block columns %}
+  <tr>
+    <th scope="col">Producto</th>
+    <th scope="col">Cantidad</th>
+    <th scope="col">Precio</th>
+    <th scope="col">Total</th>
+    <th scope="col">Pagado</th>
+    <th></th>
+  </tr>
+{% endblock %}
+
+{% block rows %}
+  {% for od in object.order_details.all %}
+    <tr>
+      <td>{{od.product.name}}</td>
+      <td>{{od.quantity}}</td>
+      <td>{{od.product.price_product|floatformat:2}}</td>
+      <td>{{od.total|floatformat:2}}</td>
+      <td> {{ object.payment.created_at|date:"Y-m-d"}} </td>
+    </tr>
+  {% endfor %}
+{% endblock %}
+
+
+   
+{% block button_add %}
+  <a href="{% url 'order_list' %}" class="btn btn-primary btn-flat" >
+    Volver al listado de pedidos
+  </a>
+{% endblock %}
