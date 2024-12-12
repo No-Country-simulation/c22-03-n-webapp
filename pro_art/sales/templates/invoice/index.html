@@ -2,49 +2,62 @@
 
 
 {% block  invoicecolumns %}
-<tr>
-    <th scope="col">Fecha Factura</th>
-    <td scope="col">Fecha </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+<table>
+  <tr>
+    <td>Fecha Factura:</td>
+    <td>30/01/2014</td>
+  </tr>
+  <tr>
+    <td>Número de Factura:</td>
+    <td>14</td>
+  </tr>
+</table>
 
-</tr>
-<tr>
-    <th scope="col">Número de Factura</th>
-    <td scope="col">Número </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-</tr>
 
 {% endblock %}
 
 {% block  invoicerows %}
-  
+<table>
+  <tr>
+    <td>Proveedor:</td>
+    <td>Tobias</td>
+    <td>Linus</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>14</td>
+    <td>10</td>
+  </tr>
+  <tr>
+    <td>Dirección:</td>
+    <td>14</td>
+    <td>10</td>
+  </tr>
+
+</table>
 
 {% endblock %}
 
 
 {% block  invoicecolumnscustomer %}
-    <tr>
-        <th scope="col">Cliente</th>
-        <td scope="col">Pepe </td>
-    </tr>
-    <tr>
-        <th scope="col">Email</th>
-        <td scope="col">Pepe@pepe </td>
-    </tr>
+<table>
+  <tr>
+    <td>Cliente:</td>
+    <td>Tobias</td>
+    <td>Linus</td>
+  </tr>
+  <tr>
+    <td>Email</td>
+    <td>14</td>
+    <td>10</td>
+  </tr>
+  <tr>
+    <td>Dirección:</td>
+    <td>14</td>
+    <td>10</td>
+  </tr>
+
+</table>
 
 
 {% endblock %}
