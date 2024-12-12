@@ -5,7 +5,7 @@ def create_default_categories(apps, schema_editor):
     Category = apps.get_model('products', 'Category')
     default_categories = [
         'Joyería Artesanal',
-        'Decoración para el Hogar'
+        'Decoración para el Hogar',
         'Textiles',
         'Cerámica y Alfarería',
         'Productos de Madera',
