@@ -121,10 +121,22 @@ main {
   border-radius: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease-in-out;
 }
 
 .product-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transform: translateY(-5px);
+}
+
+.product-card:active {
+  text-decoration: none;
+  color: inherit;
 }
 
 .product-card img {
@@ -168,6 +180,11 @@ main {
   border-color: var(--sage-700);
 }
 
+.btn-primary:active {
+  background-color: var(--sage-600) !important; 
+  border-color: var(--sage-700) !important;
+}
+
 .btn-outline-primary {
   color: var(--sage-800);
   border-color: var(--sage-800);
@@ -176,6 +193,25 @@ main {
 .btn-outline-primary:hover {
   background-color: var(--sage-800);
   border-color: var(--sage-800);
+}
+
+.btn-outline-primary:active {
+  background-color: var(--sage-700) !important;
+  border-color: var(--sage-700) !important;
+}
+
+.dropdown-item:active {
+  background-color: var(--sage-400) !important;
+  border-color: var(--sage-400) !important;
+}
+
+.nav-pills > a.nav-link {
+  color: var(--sage-600) !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: var(--sage-600);
+  color: var(--cream-200);
 }
 
 @media (max-width: 768px) {
