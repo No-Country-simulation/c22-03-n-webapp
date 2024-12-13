@@ -58,7 +58,7 @@ class Product_createView(ProductViewAbstract, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'products/create.html'
-    success_url = reverse_lazy('product_list')
+    success_url = reverse_lazy('home')
 
     def post(self, request):
         # Obtenemos el formulario del producto

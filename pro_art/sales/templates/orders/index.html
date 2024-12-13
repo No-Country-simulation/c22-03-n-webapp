@@ -1,46 +1,59 @@
 {% extends 'list.html' %}
-
-{% block messages %}
-  {% if messages %}
-    <h1 class="alert alert-secondary" role="alert">
-    {% for message in messages %}
-      {{ message }}
-    {% endfor %}
-    </h1>
-  {% endif %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Lista de Pedidos</h2>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Número de Pedido</th>
+                        <th scope="col">Fecha de Creación</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Estado de Pago</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in object_list %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.created_at|date:"d/m/Y" }}</td>
+                        <td>
+                            <span class="badge {% if order.status == 'COMPLETED' %}bg-success
+                                             {% elif order.status == 'CANCELED' %}bg-danger
+                                             {% else %}bg-warning{% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if order.payment %}
+                                <span class="text-success">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Pagado el {{ order.payment.created_at|date:"d/m/Y"}}
+                                </span>
+                            {% elif order.status == 'CANCELED' %}
+                                <span class="text-danger">
+                                    <i class="fas fa-times-circle me-1"></i>
+                                    Cancelado el {{ order.updated_at|date:"d/m/Y"}}
+                                </span>
+                            {% else %}
+                                <span class="text-warning">
+                                    <i class="fas fa-clock me-1"></i>
+                                    Pendiente de pago
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'order_detail' pk=order.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit me-1"></i>Ver detalle
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 {% endblock %}
-
-{% block columns %}
-<tr>
-  <th scope="col">Order Number</th>
-  <th scope="col">Created at</th>
-  <th scope="col">Status</th>
-  <th scope="col"></th>
-</tr>
-{% endblock %}
-   
-{% block rows %}
-  {% for o in object_list %}
-  <tr>
-      <td>{{o.id}}</td>
-      <td>{{o.created_at|date:"Y-m-d"}}</td>
-      <td> {{o.status}}  </td>
-      <td>
-        {% if o.payment %}
-          Pagado con fecha: {{ o.payment.created_at|date:"Y-m-d"}}
-        {% elif o.status == 'CANCELED' %}
-          Cancelado con fecha: {{ o.updated_at|date:"Y-m-d"}}
-        {% else %}
-          Pendiente de pago
-        {% endif %}
-      </td>
-      <td>
-        <a href="{% url 'order_detail' pk=o.id %}">
-          <i class="fas fa-edit"></i>
-        </a>
-      </td>
-    </tr>
-    {% endfor %}
-{% endblock %}
- 
-{% block button_add %}{% endblock %}

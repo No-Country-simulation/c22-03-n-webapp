@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProArt Marketplace</title>
-    <!-- <link href="{% static 'lib/bootstrap-4.4.1-dist/css/bootstrap.min.css' %}" rel="stylesheet"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -26,9 +25,31 @@
 
     {% include 'components/footer.html' %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function scrollToFeatured() {
+          const target = document.getElementById('featured');
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+          const startPosition = window.pageYOffset;
+          const duration = 2000;
+          let startTime = null;
 
-    <!-- <script src="{% static 'lib/bootstrap-4.4.1-dist/js/bootstrap.min.css' %}"></script> -->
+          function animateScroll(currentTime) {
+              if (startTime === null) startTime = currentTime;
+              const timeElapsed = currentTime - startTime;
+              const run = ease(timeElapsed, startPosition, targetPosition - startPosition, duration);
+              window.scrollTo(0, run);
+              if (timeElapsed < duration) requestAnimationFrame(animateScroll);
+          }
+
+          function ease(t, b, c, d) {
+              t /= d / 2;
+              if (t < 1) return (c / 2) * t * t + b;
+              t--;
+              return (-c / 2) * (t * (t - 2) - 1) + b;
+          }
+
+          requestAnimationFrame(animateScroll);
+      }
+    </script>
 </body>
-<!-- MDB 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>-->
 </html>

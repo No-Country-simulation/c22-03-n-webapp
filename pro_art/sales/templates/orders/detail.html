@@ -2,106 +2,172 @@
 
 {% block messages %}
   {% if messages %}
-    <h1 class="alert alert-secondary" role="alert">
-    {% for message in messages %}
-      {{ message }}
-    {% endfor %}
-    </h1>
+    <div class="alert alert-secondary" role="alert">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
   {% endif %}
 {% endblock %}
 
-{% block columns %}
-  <tr>
-    <th>Imagen</th>
-    <th scope="col">Creado</th>
-    <th scope="col">Producto</th>
-    <th scope="col">Cantidad</th>
-    <th scope="col">Precio</th>
-    <th scope="col">Total</th>
-    <th></th>
-    <th></th>
-  </tr>
-{% endblock %}
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Detalle del Pedido #{{ object.id }}</h2>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h5 class="mb-0">Estado del Pedido</h5>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge {% if object.status == 'COMPLETED' %}bg-success
+                                        {% elif object.status == 'CANCELED' %}bg-danger
+                                        {% else %}bg-warning{% endif %}">
+                            {{ object.status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Fecha de Creación:</strong></p>
+                        <p>{{ object.created_at|date:"d/m/Y" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1"><strong>Estado de Pago:</strong></p>
+                        {% if object.payment %}
+                            <p class="text-success">
+                                <i class="fas fa-check-circle me-1"></i>
+                                Pagado el {{ object.payment.created_at|date:"d/m/Y"}}
+                            </p>
+                        {% elif object.status == 'CANCELED' %}
+                            <p class="text-danger">
+                                <i class="fas fa-times-circle me-1"></i>
+                                Cancelado
+                            </p>
+                        {% else %}
+                            <p class="text-warning">
+                                <i class="fas fa-clock me-1"></i>
+                                Pendiente de pago
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-{% block rows %}
-  {% for od in object.order_details.all %}
-    <tr>
-      <td>
-        {% if od.product.images.first %}
-            <img src="{{ od.product.images.first.image.url }}" class="card-img-top" alt="{{ od.product.name }}" style="width:50px">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                {% block columns %}
+                <tr>
+                    <th>Imagen</th>
+                    <th scope="col">Creado</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Total</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% endblock %}
+
+                {% block rows %}
+                {% for od in object.order_details.all %}
+                    <tr>
+                        <td>
+                            {% if od.product.images.first %}
+                                <img src="{{ od.product.images.first.image.url }}" class="card-img-top" alt="{{ od.product.name }}" style="width:50px">
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="width:50px">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{od.created_at|date:"Y-m-d"}}</td>
+                        <td>{{od.product.name}}</td>
+                        <td>{{od.quantity}}</td>
+                        <td>{{od.product.price_product|floatformat:2}}</td>
+                        <td>{{od.total|floatformat:2}}</td>
+                        <td>
+                            {% if object.status == 'PENDING' %}
+                                {% if od.quantity > 1 %}
+                                    <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value='{{od.quantity|add:"-1"}}'>
+                                        <button type="submit" class="btn border">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                                <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="quantity" value="{{od.quantity|add:1}}">
+                                    <button type="submit" class="btn border">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if object.status == 'PENDING' %}
+                                <form method="post" action="{% url 'order_detail_delete' pk=od.pk %}" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button> 
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% endblock %}
+            </table>
+        </div>
+
+        {% block more_button %}
+        {% if object.payment %}
+            <div class="alert alert-success" role="alert">
+                Pagado con fecha: {{ object.payment.created_at|date:"Y-m-d"}}
+            </div>
+        {% elif object.status == 'CANCELED' %}
+            <div class="alert alert-warning" role="alert">
+                Cancelado con fecha: {{ object.updated_at|date:"Y-m-d" }}
+            </div>
         {% else %}
-            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="width:50px">
-                <i class="fas fa-image fa-3x text-muted"></i>
+            <div class="alert alert-info" role="alert">
+                Total a pagar: {{ total|floatformat:2 }}
+                {% if total %}
+                    <a href="{% url 'order_payment' order_pk=object.pk %}" class="btn btn-primary btn-flat" >
+                        Pagar
+                    </a>
+                {% endif %}
             </div>
         {% endif %}
-      </td>
-      <td>{{od.created_at|date:"Y-m-d"}}</td>
-      <td>{{od.product.name}}</td>
-      <td>{{od.quantity}}</td>
-      <td>{{od.product.price_product}}</td>
-      <td>{{od.total}}</td>
-      <td>
-        {% if order.status == 'PENDING' %}
-          {% if od.quantity > 1 %}
-            <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
-              {% csrf_token %}
-              <input type="hidden" name="quantity" value='{{od.quantity|add:"-1"}}'>
-              <button type="submit" class="btn border">
-                <i class="fas fa-minus"></i>
-              </button>
-            </form>
-          {% endif %}
-          <form method="post" action="{% url 'order_detail_update' pk=od.pk %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="quantity" value="{{od.quantity|add:1}}">
-            <button type="submit" class="btn border">
-              <i class="fas fa-plus"></i>
-            </button>
-          </form>
+
+        <a href="{% url 'home' %}" class="btn btn-primary btn-flat" >Seguir comprando</a>
+        {% endblock %}
+        
+        {% block button_add %}
+        <div class="mt-3">
+            <a href="{% url 'order_list' %}" class="btn btn-primary btn-flat" >
+                Volver al listado de pedidos
+            </a>
+        </div>
+        {% endblock %}
+
+        {% if object.status == 'PENDING' %}
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <a href="{% url 'order_detail_delete' pk=object.id %}" class="btn btn-outline-danger">
+                <i class="fas fa-times me-1"></i>Cancelar Pedido
+            </a>
+             <a href="{% url 'order_payment' order_pk=object.pk %}" class="btn btn-primary">
+                <i class="fas fa-credit-card me-1"></i>Proceder al Pago
+            </a>
+        </div>
         {% endif %}
-      </td>
-      <td>
-        {% if order.status == 'PENDING' %}
-          <form method="post" action="{% url 'order_detail_delete' pk=od.pk %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">
-              <i class="fas fa-trash"></i>
-            </button> 
-          </form>
-        {% endif %}
-      </td>
-    </tr>
-  {% endfor %}
-{% endblock %}
-
-
-{% block more_button %}
-
-{% if object.payment  %}
-  <div class="alert alert-success" role="alert">
-    Pagado con fecha: {{ object.payment.created_at|date:"Y-m-d"}}
-  </div>
-{% elif order.status == 'CANCELED' %}
-  <div class="alert alert-warning" role="alert">
-    Cancelado con fecha: {{ object.updated_at|date:"Y-m-d" }}
-  </div>
-{% else %}
-  <div class="alert alert-info" role="alert">
-    Total a pagar: {{ total }}
-    {% if total %}
-      <a href="{% url 'order_payment' order_pk=object.pk %}" class="btn btn-primary btn-flat" >
-        Pagar
-      </a>
-    {% endif %}
-  </div>
-{% endif %}
-
-<a href="{% url 'home' %}" class="btn btn-primary btn-flat" >Seguir comprando</a>
-{% endblock %}
-   
-  
-{% block button_add %}
-  <a href="{% url 'order_list' %}" class="btn btn-primary btn-flat" >
-    Volver al listado de pedidos
-  </a>
+    </div>
+</section>
 {% endblock %}
