@@ -11,8 +11,7 @@
                         Cada artículo de nuestra colección está creado cuidadosamente por artesanos expertos que vierten su pasión en cada detalle.
                     </p>
                     <div class="d-flex gap-3">
-                        <button class="btn btn-primary btn-lg">Shop Now</button>
-                    <!-- <button class="btn btn-outline-primary btn-lg">About Us</button> -->
+                        <button class="btn btn-primary btn-lg" onClick="scrollToFeatured()">Shop Now</button>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -24,20 +23,7 @@
         </div>
     </section>
 
-    <!-- Categories -->
-<!--     <section class="categories py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">Categorias</h2>
-            <div class="row g-4">
-                {% for category in categories %}
-                    {% include 'components/category_card.html' with category=category %}
-                {% endfor %}
-            </div>
-        </div>
-    </section> -->
-
-    <!-- Products -->
-    <section class="featured-products py-5">        
+    <section class="featured-products py-5" id="featured">        
        <div class="container">
             <div class="row g-4">
                 {% for product in products %}
